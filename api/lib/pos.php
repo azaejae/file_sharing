@@ -1,6 +1,6 @@
 <?php
 
-// dddddInclude the AWS SDK using theddd Composer autoloader.
+// dddddIdasdasdasdasdasdasdasdadnclude the AWS SDK using theddd Composer autoloader.
 //require 'vendor/autoload.php';
 require(realpath(dirname(__FILE__)) . '/vendor/autoload.php');
 
