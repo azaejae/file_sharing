@@ -1,6 +1,6 @@
 <?php
 
-// dddddIdasdasdasdasdasdasdasdadnclude the AWS SDK using theddd Composer autoloader.
+// dddddfdsfffhfghfghgfhgfhIdasdasdasdasdasdasdasdadnclude the AWS SDK using theddd Composer autoloader.
 //require 'vendor/autoload.php'; add some galau
 require(realpath(dirname(__FILE__)) . '/vendor/autoload.php');
 
