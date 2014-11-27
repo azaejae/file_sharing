@@ -69,6 +69,7 @@ crashlytics.properties
 crashlytics-build.properties
 
 api/lib/vendor/
+api/lib/uploads/
 
 
 
