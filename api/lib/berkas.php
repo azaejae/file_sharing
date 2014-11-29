@@ -10,11 +10,11 @@ class Berkas
 {
 
     //property berkas
-    private $_hash;
-    private $_extensiBerkas='docx';
-    private $_namaFile;
-    private $_base;
-    private $_ukuran;
+    protected $_hash;
+    protected $_extensiBerkas;
+    protected $_namaFile;
+    protected $_base;
+    protected $_ukuran;
     protected $_db;
 
 
@@ -32,10 +32,6 @@ class Berkas
     /**
      * @return mixed
      */
-    public function getHash()
-    {
-        return $this->_hash;
-    }
 
     public function setHash($hash)
     {
@@ -45,33 +41,22 @@ class Berkas
     /**
      * @return mixed
      */
-    public function getExtensiBerkas()
+
+    protected function setExtensiBerkas($namaFile)
     {
-        return $this->_extensiBerkas;
+        $ex=new SplFileInfo($namaFile);
+
+        $this->_extensiBerkas=$ex->getExtension();
     }
 
-    /**
-     * @return mixed
-     */
-    public function getNamaFile()
-    {
-        return $this->_namaFile;
-    }
 
     /**
      * @param mixed $namaFile
      */
     public function setNamaFile($namaFile)
     {
+        $namaFile= basename($namaFile);
         $this->_namaFile = $namaFile;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBase()
-    {
-        return $this->_base;
     }
 
     /**
@@ -83,19 +68,12 @@ class Berkas
     }
 
     /**
-     * @return mixed
-     */
-    public function getUkuran()
-    {
-        return $this->_ukuran;
-    }
-
-    /**
      * @param mixed $ukuran
      */
-    public function setUkuran($ukuran)
+    protected function setUkuran($ukuran)
     {
-        $this->_ukuran = $ukuran;
+
+        $this->_ukuran = filesize($ukuran);
     }
 
     //chech hash
@@ -104,12 +82,25 @@ class Berkas
         $hash = md5_file($file);
         return $hash;
     }
-    public static function cariHash($hash)
+    public function cariHash($hash)
     {
+        $sql=('SELECT hash FROM berkas WHERE hash LIKE ?');
+        $exe=$this->_db->prepare($sql);
+        $exe->execute(array($hash));
+        $hitung=$exe->rowCount();
+
+        if($hitung>0)
+        {
+            return $hash;
+        }
+        else
+        {
+            return 0;
+        }
 
     }
 
-    public function tambahBerkas()
+    protected function tambahBerkas()
     {
         $sql= 'INSERT INTO berkas(hash,ekstensi_berkas,nama_file,base,ukuran) VALUES(:hash,:ekstensi_berkas,:nama_file,:base,:ukuran)';
         $exe=$this->_db->prepare($sql);
@@ -124,7 +115,10 @@ class Berkas
     {
         if($hash!=null)
         {
-
+            $sql=('SELECT * FROM berkas WHERE hash LIKE ?');
+            $exe=$this->_db->prepare($sql);
+            $exe->execute(array($hash));
+            $data=$exe->fetchAll(PDO::FETCH_ASSOC);
         }
         else
         {
@@ -136,6 +130,48 @@ class Berkas
 
         $data=array('hasil'=>$data);
         echo json_encode($data);
+    }
+
+    public function unggahBerkas()
+    {
+        ini_set('max_execution_time',0);
+        require(realpath(dirname(__FILE__)) . '/vendor/autoload.php');
+
+        //use Aws\S3\S3Client;
+        //use Aws\S3\Exception\S3Exception;
+
+        $target_dir = "uploads/";
+        $target_file = $target_dir . $this->_namaFile;
+        move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+
+        $bucket = 'ahmadza';
+        $keyname = basename($_FILES["fileToUpload"]["name"]);
+// $filepath should be absolute path to a file on disk
+        $filepath = $target_file;
+
+// Instantiate the client.
+        $s3 = S3Client::factory(array(
+            'key'    => 'AKIAJNBAJZYQ3RX7HM3Q',
+            'secret' => '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'
+        ));
+
+        try {
+            // Upload data.
+            $result = $s3->putObject(array(
+                'Bucket' => $bucket,
+                'Key'    => $keyname,
+                'SourceFile'   => $filepath,
+                'ACL'    => 'public-read'
+            ));
+
+
+
+            // Print the URL to the object.
+            echo $result['ObjectURL'] . "\n";
+            unlink($target_file);
+        } catch (S3Exception $e) {
+            echo $e->getMessage() . "\n";
+        }
     }
 
     /**
