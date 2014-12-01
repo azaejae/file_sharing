@@ -42,9 +42,9 @@ class Berkas
      * @return mixed
      */
 
-    protected function setExtensiBerkas($namaFile)
+    protected function setExtensiBerkas()
     {
-        $ex=new SplFileInfo($namaFile);
+        $ex=new SplFileInfo($this->_namaFile);
 
         $this->_extensiBerkas=$ex->getExtension();
     }
