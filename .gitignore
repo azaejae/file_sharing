@@ -70,6 +70,7 @@ crashlytics-build.properties
 
 api/lib/vendor/
 api/lib/uploads/
+api/dummy/
 
 
 

@@ -40,9 +40,9 @@ class Sekolah {
 
     public function tambahSekolah()
     {
-        $sql='INSER INTO sekolah VALUES(:NPSN,:nama_sekolah,:alamat,:status,:logo)';
+        $sql='INSERT INTO sekolah VALUES(:npsn,:nama_sekolah,:alamat,:status,:logo)';
         $ex=$this->_db->prepare($sql);
-        $ex->execute(array('NPSN'=>$this->_NPSN,
+        $ex->execute(array('npsn'=>$this->_NPSN,
                             'nama_sekolah'=>$this->_nama_sekolah,
                             'alamat'=>$this->_alamat_sekolah,
                             'status'=>$this->_status,
