@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h1>Code By azaejae</h1>
 
 <form action="pos.php" method="post" enctype="multipart/form-data">
     Select image to upload:

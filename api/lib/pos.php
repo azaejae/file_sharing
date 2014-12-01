@@ -1,9 +1,9 @@
 <?php
 
-// Include the AWS SDK using theddd Composer autoloader.
-//require 'vendor/autoload.php';
+// dddddfdsfffhfghfghgfhgfhIdasdasdasdasdasdasdasdadnclude the AWS SDK using theddd Composer autoloader.
+//require 'vendor/autoload.php'; add some galau
 require(realpath(dirname(__FILE__)) . '/vendor/autoload.php');
-
+ini_set('max_execution_time',0);
 use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
 
