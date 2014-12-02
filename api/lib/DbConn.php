@@ -27,11 +27,10 @@ class DbConn {
     public static function getConnection() {
 
 //Guarantees single instance, if no connection object exists then create one.
-        if (!self::$_db) {
+        //if (!self::$_db) {
 //new connection object.
             new dbConn();
-        }
-
+       //}
 //return connection.
         return self::$_db;
     }

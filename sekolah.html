@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="js/jquery.min.js" ></script>
+    <script>
+        $(document).ready(function(){
+            $('#bu').click(function(){
+                alert('ahmad');
+                $.getJSON("http://api.local/sekolah.php?api_key=apikey&secret=secret",function(result){
+                    $.each(result.hasil, function(i, sk){
+                        $("div").append("<img src="+sk.logo + " /></br>");
+                    });
+                });
+            });
+        });
+
+    </script>
+    <title>halaman Sekolah</title>
+</head>
+<body>
+<button id="bu">Get JSON data</button>
+<div></div>
+</body>
+</html>

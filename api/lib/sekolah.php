@@ -8,6 +8,10 @@
  * 
  */
 
+require(realpath(dirname(__FILE__)) . '/vendor/autoload.php');
+require(realpath(dirname(__FILE__)) . '/berkas.php');
+use Aws\S3\S3Client;
+use Aws\S3\Exception\S3Exception;
 class Sekolah {
     /*
      * Property
@@ -35,7 +39,44 @@ class Sekolah {
 
     public function uploadLogo($logo)
     {
+        $berkas=$logo;
 
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($berkas["logo"]["name"]);
+        move_uploaded_file($berkas["logo"]["tmp_name"], $target_file);
+
+        $bucket = 'statikosi';
+        $keyname = Berkas::fileHashing($target_file).".".Berkas::getExtensi($berkas["logo"]["name"]);
+        // $filepath should be absolute path to a file on disk
+        $filepath = $target_file;
+
+        // Instantiate the client.
+        $s3 = S3Client::factory(array(
+            'key'    => 'AKIAJNBAJZYQ3RX7HM3Q',
+            'secret' => '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'
+        ));
+
+        try {
+            // Upload data.
+            $result = $s3->putObject(array(
+                'Bucket' => $bucket,
+                'Key'    => $keyname,
+                'SourceFile'   => $filepath,
+                'ACL'    => 'public-read'
+            ));
+
+
+
+            // Print the URL to the object.
+            //echo $result['ObjectURL'] . "\n";
+            //echo json_encode(array("result"=>"berhasil","url"=>$result['ObjectURL']));
+            unlink($target_file);
+            $this->_logo=$result['ObjectURL'];
+        } catch (S3Exception $e) {
+            //echo $e->getMessage() . "\n";
+           // echo json_encode(array('result'=>'gagal','pesan'=>$e->getMessage()));
+            $this->_logo='logo.jpg';
+        }
     }
 
     public function tambahSekolah()
@@ -46,7 +87,21 @@ class Sekolah {
                             'nama_sekolah'=>$this->_nama_sekolah,
                             'alamat'=>$this->_alamat_sekolah,
                             'status'=>$this->_status,
-                            'logo'=>'logo.jpg'));
+                            'logo'=>$this->_logo));
 
+    }
+
+    public function getDataSekolah()
+    {
+        $sql='SELECT * FROM sekolah';
+        $hasil=$this->_db->query($sql);
+        $data=$hasil->fetchAll(PDO::FETCH_ASSOC);
+        $data=array('hasil'=>$data);
+        echo json_encode($data);
+    }
+
+    public function __destruct()
+    {
+        $this->_db=null;
     }
 }

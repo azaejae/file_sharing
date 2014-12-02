@@ -6,6 +6,10 @@
  * Time: 19:05
  */
 
+require(realpath(dirname(__FILE__)) . '/vendor/autoload.php');
+
+use Aws\S3\S3Client;
+use Aws\S3\Exception\S3Exception;
 class Berkas
 {
 
@@ -47,6 +51,13 @@ class Berkas
         $ex=new SplFileInfo($this->_namaFile);
 
         $this->_extensiBerkas=$ex->getExtension();
+    }
+
+    public static function getExtensi($berkas)
+    {
+        $ex= new SplFileInfo($berkas);
+
+        return $ex->getExtension();
     }
 
 
@@ -132,20 +143,15 @@ class Berkas
         echo json_encode($data);
     }
 
-    public function unggahBerkas()
+    public function unggahBerkas($berkas)
     {
-        ini_set('max_execution_time',0);
-        require(realpath(dirname(__FILE__)) . '/vendor/autoload.php');
-
-        //use Aws\S3\S3Client;
-        //use Aws\S3\Exception\S3Exception;
-
+        $file=$berkas;
         $target_dir = "uploads/";
         $target_file = $target_dir . $this->_namaFile;
-        move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+        move_uploaded_file($file["berkas"]["tmp_name"], $target_file);
 
-        $bucket = 'ahmadza';
-        $keyname = basename($_FILES["fileToUpload"]["name"]);
+        $bucket = 'berkasosi';
+        $keyname = Berkas::fileHashing($target_file).".".Berkas::getExtensi($file["berkas"]["name"]);;
 // $filepath should be absolute path to a file on disk
         $filepath = $target_file;
 
