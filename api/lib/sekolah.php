@@ -22,6 +22,7 @@ class Sekolah {
     private $_status;
     private $_logo;
     protected $_db;
+    protected $_tmp;
 
     public function __construct()
     {
@@ -70,12 +71,14 @@ class Sekolah {
             // Print the URL to the object.
             //echo $result['ObjectURL'] . "\n";
             //echo json_encode(array("result"=>"berhasil","url"=>$result['ObjectURL']));
-            unlink($target_file);
+            //unlink($target_file);
+            $this->_tmp=$target_file;
+            unlink($this->_tmp);
             $this->_logo=$result['ObjectURL'];
         } catch (S3Exception $e) {
             //echo $e->getMessage() . "\n";
            // echo json_encode(array('result'=>'gagal','pesan'=>$e->getMessage()));
-            $this->_logo='logo.jpg';
+            $this->_logo='https://statikosi.s3.amazonaws.com/logo.png';
         }
     }
 
