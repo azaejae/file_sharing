@@ -62,7 +62,7 @@
           {
               $(location).attr('href','snippet.html');
           }
-          var host='http://api.local/user.php'
+          var host='http://api.local/user.php?menu=login'
             $('#login').submit(function(){
                 alert(host);
                 $.ajax({

@@ -10,13 +10,19 @@
 
   <!-- Core CSS - Include with every page -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/jquery-ui.min.css" rel="stylesheet">
+  <link href="css/jquery-ui.theme.min.css" rel="stylesheet">
   <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
 
   <!-- Page-Level Plugin CSS - Blank -->
 
   <!-- SB Admin CSS - Include with every page -->
   <link href="css/sb-admin.css" rel="stylesheet">
-
+<style>
+    .ui-autocomplete {
+        z-index: 5000;
+    }
+</style>
 </head>
 
 <body>
@@ -32,7 +38,7 @@
           <span class="icon-bar"></span>
         </button>
         <!-- Title Apps -->
-        <a class="navbar-brand" href="index.html">Dashboard</a>
+        <a class="navbar-brand" href="index.html">Title Apps</a>
       </div>
       <!-- /.navbar-header -->
 
@@ -59,7 +65,7 @@
 
             <!-- SIDE LISET MENU -->
             <li>
-              <a href="sekolah.php"><i class="fa fa-graduation-cap fa-fw"></i> Sekolah</a>
+              <a href="index.html"><i class="fa fa-graduation-cap fa-fw"></i> Sekolah</a>
             </li>
             <li>
               <a href="index.html"><i class="fa fa-group fa-fw"></i> Pengguna</a>
@@ -85,7 +91,7 @@
       <!-- CONTENT HEADER -->
       <div class="row">
         <div class="col-lg-12">
-          <h1 class="page-header">Halaman Sekolah</h1>
+          <h1 class="page-header">Halaman Pengguna</h1>
         </div>
         <!-- /.col-lg-12 -->
       </div>
@@ -94,11 +100,12 @@
 
       <!-- CONTENT -->
       <div class="row">
-        <div class="col-lg-3 text-left">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-md">Tambah Sekolah</button>
+        <div class="col-md-6 text-left">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-md">Pendaftaran Pengguna</button>
         </div>
       </div>
       <!-- END CONTENT -->
+
         <!-- Small modal -->
 
 
@@ -108,31 +115,40 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Form tambah sekolah</h4>
+                        <h4 class="modal-title" id="myModalLabel">Form tambah pengguna</h4>
                     </div>
                     <div class="modal-body">
                         <form role="form" id="tambah_sekolah" method="post">
                             <div class="form-group">
                                 <!--<label for="recipient-name" class="control-label">Recipient:</label>-->
-                                <input type="text" class="form-control" name="npsn" placeholder="NPSN" required>
+                                <input type="text" class="form-control" name="username" placeholder="Username" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" name="nama_sekolah" placeholder="Nama Sekolah" required>
+                                <input type="password" class="form-control" name="password" placeholder="Password" required>
                             </div>
                             <div class="form-group">
-                                <label for="status" class="control-label">Status : </label>
-                                <select name="status" id="status" class="form-control">
-                                    <option value="Negeri">Negeri</option>
-                                    <option value="Swasta">Swasta</option>
+                                <input type="text" class="form-control" name="nama" placeholder="Nama lengkap" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="nama_sekolah" id="sekolah" placeholder="Nama Sekolah" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="jenis_user" class="control-label">Jenis user</label>
+                                <select name="jenis_user" id="jenis_user">
+                                    <option value="1">Admin</option>
+                                    <option value="2">Pengajar</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" name="email" required placeholder="E-mail">
                             </div>
                             <div class="form-group">
                                 <!--<label for="message-text" class="control-label">Message:</label>-->
                                 <textarea class="form-control" name="alamat" placeholder="Alamat" required></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="logo" class="control-label">Logo :</label>
-                                <input type="file"  name="logo" id="logo"  required>
+                                <label for="foto" class="control-label">Foto :</label>
+                                <input type="file"  name="foto" id="foto"  required>
                             </div>
                             <div class="form-group">
                                 <input type="submit" class="btn btn-primary text-right" value="Tambah">
@@ -154,24 +170,27 @@
 
             <!-- TITLE TABLE -->
             <div class="panel-heading">
-              Daftar Sekolah
+              Daftar Pengguna
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
               <div class="table-responsive">
-                <table class="table table-striped table-bordered table-hover" id="sekolah">
+                <table class="table table-striped table-bordered table-hover" id="pengguna">
                   <thead>
                     <tr>
-                      <th>NPSN</th>
-                      <th>Nama Sekolah</th>
-                      <th>Alamat Sekolah</th>
-                      <th>Status</th>
-                      <th>Op</th>
+                      <th>Username</th>
+                      <th>Nama</th>
+                      <th>Jenis</th>
+                      <th>Sekolah</th>
+                      <th>Alamat</th>
+                      <th>E-mail</th>
+                      <th>Opsi</th>
                     </tr>
                   </thead>
+
+                  <!-- TABLE CONTENT -->
                   <tbody>
                   </tbody>
-
                   <!-- TABLE CONTENT -->
                 </table>
               </div>
@@ -185,14 +204,14 @@
       <!-- END TABLE -->
 
 
-
-    </div>
+      </div>
     <!-- /#page-wrapper -->
 
   </div>
   <!-- /#wrapper -->
   <!-- Core Scripts - Include with every page -->
   <script src="js/jquery-1.10.2.js"></script>
+  <script src="js/jquery-ui.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
   <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
@@ -205,70 +224,58 @@
   <!-- Page-Level Demo Scripts - Blank - Use for reference -->
 <script>
     $(document).ready(function(){
-        var urlTambah='http://api.local/sekolah.php?menu=tambah';
-        //cek session
-        /*if(sessionStorage.getItem('access_key')==null)
+       /* if(sessionStorage.getItem('access_key')==null)
         {
             $(location).attr('href','login.php');
-        }*/
-        //alert(sessionStorage.access_key);
-        //logout
+        }
+        alert(sessionStorage.access_key);
+        */
         $('#logout').click(function(){
             alert('Anda Berhasil Logout');
             sessionStorage.clear();
             location.reload();
         });
-        //data table
-        //$('#sekolah').dataTable();
 
-        //get sekolah
-        $.getJSON("http://api.local/sekolah.php",function(result){
+        $("#sekolah").autocomplete({
+            source: function( request, response ) {
+                $.ajax({
+                    url: "http://api.local/dummy/iv.php",
+                    dataType: "json",
+                    data: {term: request.term},
+                    success: function(data) {
+                        response($.map(data, function(item) {
+                            return {
+                                label: item.label,
+                                id: item.npsn
+                            };
+                        }));
+                    }
+                });
+            },
+            minLength: 2,
+            select: function(event, ui) {
+                $('#state_id').val(ui.item.id);
+                $('#abbrev').val(ui.item.abbrev);
+            }
+        });
+        //daftar pengguna
+        $.getJSON("http://api.local/user.php",function(result){
             $.each(result.data, function(i, sk){
                 //alert(sk.nama_sekolah);
-                $("#sekolah tbody").append("<tr>" +
-                "<td>"+sk.npsn+"</td>"+
-                    "<td>"+sk.nama_sekolah+"</td>"+
-                    "<td>"+sk.alamat_sekolah+"</td>"+
-                    "<td>"+sk.status+"</td>"+
-                    "<td>Hapus | Ubah</td>"+
+                $("#pengguna tbody").append("<tr>" +
+                "<td>"+sk.username+"</td>"+
+                "<td>"+sk.nama_user+"</td>"+
+                "<td>"+sk.jenis_user+"</td>"+
+                "<td>"+sk.nama_sekolah+"</td>"+
+                "<td>"+sk.alamat+"</td>"+
+                "<td>"+sk.email+"</td>"+
+                "<td>Hapus | Ubah</td>"+
                 "</tr>");
             })
         }).done(function(){
-            $('#sekolah').dataTable();
+            $('#pengguna').dataTable();
         });
 
-        //tambah sekolah
-        $('form#tambah_sekolah').submit(function(){
-            alert('form tambah');
-            var formData = new FormData($(this)[0]);
-            $.ajax({
-                url : urlTambah,
-                type: "POST",
-                //mimeType : "multipart/form-data",
-                data : formData,
-                async: false,
-                dataType: "JSON",
-                success: function(respon)
-                {
-                    if(respon.hasil==='berhasil')
-                    {
-                        alert(respon.pesan);
-                        $('form#tambah_sekolah').each(function(){
-                           this.reset();
-                        });
-                    }
-                    else
-                    {
-                        alert(respon.pesan);
-
-                    }
-                },
-                cache: false,
-                contentType: false,
-                processData: false
-            });
-            return false;
-        });
     });
 </script>
 </body>
