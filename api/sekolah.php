@@ -8,13 +8,27 @@
  * 
  */
 header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Content-Range, Content-Disposition, Content-Description');
 
 require(realpath(dirname(__FILE__)) . '\lib\sekolah.php');
 require(realpath(dirname(__FILE__)) . '\lib\api.php');
 //Api::auth();
 //ini_set('max_execution_time',0);
 $sekolah=new Sekolah();
-//$sekolah->setAtribut('20237414','SMKN 3 Karawang','Jl. Kondang Jaya Klari Karawang','Negeri');
-//$sekolah->uploadLogo($_FILES);
-//$sekolah->tambahSekolah();
-$sekolah->getDataSekolah();
+if(isset($_GET['menu']))
+{
+    $menu=$_GET['menu'];
+    if($_GET['menu']=='tambah')
+    {
+        $sekolah->setAtribut($_POST['npsn'],$_POST['nama_sekolah'],$_POST['alamat'],$_POST['status']);
+        $sekolah->uploadLogo($_FILES);
+        $sekolah->tambahSekolah();
+    }
+}
+else
+{
+    $sekolah->getDataSekolah();
+}
+
+//

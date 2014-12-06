@@ -40,6 +40,7 @@ class Sekolah {
 
     public function uploadLogo($logo)
     {
+        ini_set('max_execution_time', 0);
         $berkas=$logo;
 
         $target_dir = "uploads/";
@@ -84,13 +85,22 @@ class Sekolah {
 
     public function tambahSekolah()
     {
-        $sql='INSERT INTO sekolah VALUES(:npsn,:nama_sekolah,:alamat,:status,:logo)';
-        $ex=$this->_db->prepare($sql);
-        $ex->execute(array('npsn'=>$this->_NPSN,
-                            'nama_sekolah'=>$this->_nama_sekolah,
-                            'alamat'=>$this->_alamat_sekolah,
-                            'status'=>$this->_status,
-                            'logo'=>$this->_logo));
+        try{
+            $sql='INSERT INTO sekolah VALUES(:npsn,:nama_sekolah,:alamat,:status,:logo)';
+            $ex=$this->_db->prepare($sql);
+            $ex->execute(array('npsn'=>$this->_NPSN,
+                'nama_sekolah'=>$this->_nama_sekolah,
+                'alamat'=>$this->_alamat_sekolah,
+                'status'=>$this->_status,
+                'logo'=>$this->_logo));
+            $hasil=array('hasil'=>'berhasil','pesan'=>'Sekolah '.$this->_nama_sekolah.' berhasil ditambahkan ke dalam basis data');
+            echo json_encode($hasil);
+        }
+        catch(PDOException $e)
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
+        }
+
 
     }
 
@@ -99,7 +109,7 @@ class Sekolah {
         $sql='SELECT * FROM sekolah';
         $hasil=$this->_db->query($sql);
         $data=$hasil->fetchAll(PDO::FETCH_ASSOC);
-        $data=array('hasil'=>$data);
+        $data=array('data'=>$data);
         echo json_encode($data);
     }
 
