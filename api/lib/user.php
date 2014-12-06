@@ -217,6 +217,8 @@ class User {
         $ip = $_SERVER['REMOTE_ADDR'];
         $access_key=hash('md5',$key);
         try{
+            $cleaner=$this->_db->prepare('DELETE FROM access_key WHERE username= :username');
+            $cleaner->execute(array('username'=>$username));
             $sql='INSERT INTO access_key VALUES(:username,:access_key,:valid,:ip)';
             $exe=$this->_db->prepare($sql);
             $exe->execute(array('username'=>$username,'access_key'=>$access_key,'valid'=>$key,'ip'=>$ip));
@@ -230,6 +232,21 @@ class User {
 
 
     }
+    //daftar user aktif
+    public function getUserAktif(){
+        $sql='SELECT * FROM v_pengguna';
+        try{
+            $hasil=$this->_db->query($sql);
+            $data=$hasil->fetchAll(PDO::FETCH_ASSOC);
+            $data=array('data'=>$data);
+            echo json_encode($data);
+        }
+        catch(PDOException $e)
+        {
+            $data=array('data'=>$e->getMessage());
+            echo json_encode($data);
+        }
+    }
 
     public function __destruct()
     {
@@ -241,6 +258,7 @@ class User {
 
 }
 //$user=new User();
+//$user->getUserAktif();
 //$user->setValue('azaejae','1','1','master','ahmad zaelani','karawang','ahmad@ahmad.com');
 //$user->tambahUser();
 //$user->userAuth('azaejae','master');

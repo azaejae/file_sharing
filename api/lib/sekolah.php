@@ -113,8 +113,35 @@ class Sekolah {
         echo json_encode($data);
     }
 
+    public function getAutoCompleteData()
+    {
+        $sql='SELECT nama_sekolah as label,npsn FROM sekolah';
+        if(isset($_GET['term']))
+        {
+            $nama=$_GET['term'];
+            $sql="SELECT nama_sekolah as label,npsn FROM sekolah WHERE nama_sekolah LIKE '%$nama%'";
+        }
+
+        try{
+
+            $hasil=$this->_db->query($sql);
+            $data=$hasil->fetchAll(PDO::FETCH_ASSOC);
+            //$data=array('data'=>$data);
+            echo json_encode($data);
+        }
+        catch(PDOException $e)
+        {
+            $hasil=array('hasi'=>'gagal','pesan'=>$e->getMessage());
+            echo json_encode($hasil);
+        }
+    }
+
     public function __destruct()
     {
         $this->_db=null;
     }
 }
+
+//$sekolah= new Sekolah();
+//$sekolah->getAutoCompleteData();
+//$sekolah->getDataSekolah();

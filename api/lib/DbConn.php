@@ -14,7 +14,7 @@ class DbConn {
     private function __construct()
     {
         try{
-            self::$_db = new PDO('mysql:host=localhost;dbname=skripsi', 'root', '');
+            self::$_db = new PDO('mysql:host=skripsi.cbbqdmcpus5p.ap-southeast-1.rds.amazonaws.com;dbname=skripsi', 'ahmad', 'master416144');
             self::$_db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
         }
         catch (PDOException $e) {
