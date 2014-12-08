@@ -60,7 +60,7 @@ class User {
         move_uploaded_file($berkas["foto"]["tmp_name"], $target_file);
 
         $bucket = 'statikosi';
-        $keyname = Berkas::fileHashing($target_file).".".Berkas::getExtensi($berkas["logo"]["name"]);
+        $keyname = Berkas::fileHashing($target_file).".".Berkas::getExtensi($berkas["foto"]["name"]);
         // $filepath should be absolute path to a file on disk
         $filepath = $target_file;
 
@@ -114,7 +114,7 @@ class User {
 
             $this->insertKeygen();
 
-            $pesan=array('hasil'=>'sukses','pesan'=>'User berhasil ditambahkan kedalam basis data');
+            $pesan=array('hasil'=>'berhasil','pesan'=>'User berhasil ditambahkan kedalam basis data');
             echo json_encode($pesan);
         }
         catch(PDOException $e)

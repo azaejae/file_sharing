@@ -131,7 +131,7 @@ class Sekolah {
         }
         catch(PDOException $e)
         {
-            $hasil=array('hasi'=>'gagal','pesan'=>$e->getMessage());
+            $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
             echo json_encode($hasil);
         }
     }

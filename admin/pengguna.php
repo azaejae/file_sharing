@@ -118,7 +118,7 @@
                         <h4 class="modal-title" id="myModalLabel">Form tambah pengguna</h4>
                     </div>
                     <div class="modal-body">
-                        <form role="form" id="tambah_sekolah" method="post">
+                        <form role="form" id="tambah_pengguna" method="post">
                             <div class="form-group">
                                 <!--<label for="recipient-name" class="control-label">Recipient:</label>-->
                                 <input type="text" class="form-control" name="username" placeholder="Username" required>
@@ -150,6 +150,7 @@
                                 <label for="foto" class="control-label">Foto :</label>
                                 <input type="file"  name="foto" id="foto"  required>
                             </div>
+                            <input type="hidden" name="npsn" id="npsn">
                             <div class="form-group">
                                 <input type="submit" class="btn btn-primary text-right" value="Tambah">
                                 <input type="reset" class="btn btn-danger text-left" value="Reset">
@@ -224,6 +225,7 @@
   <!-- Page-Level Demo Scripts - Blank - Use for reference -->
 <script>
     $(document).ready(function(){
+        var tambah_pengguna='http://api.local/user.php?menu=tambah'
        /* if(sessionStorage.getItem('access_key')==null)
         {
             $(location).attr('href','login.php');
@@ -239,7 +241,7 @@
         $("#sekolah").autocomplete({
             source: function( request, response ) {
                 $.ajax({
-                    url: "http://api.local/dummy/iv.php",
+                    url: "http://api.local/sekolah.php?menu=label",
                     dataType: "json",
                     data: {term: request.term},
                     success: function(data) {
@@ -254,8 +256,8 @@
             },
             minLength: 2,
             select: function(event, ui) {
-                $('#state_id').val(ui.item.id);
-                $('#abbrev').val(ui.item.abbrev);
+                $('#npsn').val(ui.item.id);
+                //$('#abbrev').val(ui.item.abbrev);
             }
         });
         //daftar pengguna
@@ -274,6 +276,39 @@
             })
         }).done(function(){
             $('#pengguna').dataTable();
+        });
+
+        //menambah pengguna
+        $('#tambah_pengguna').submit(function(){
+            alert('form tambah');
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url : tambah_pengguna,
+                type: "POST",
+                //mimeType : "multipart/form-data",
+                data : formData,
+                async: false,
+                dataType: "JSON",
+                success: function(respon)
+                {
+                    if(respon.hasil==='berhasil')
+                    {
+                        alert(respon.pesan);
+                        $('form#tambah_pengguna').each(function(){
+                            this.reset();
+                        });
+                    }
+                    else
+                    {
+                        alert(respon.pesan);
+
+                    }
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+            return false;
         });
 
     });

@@ -25,6 +25,10 @@ if(isset($_GET['menu']))
         $sekolah->uploadLogo($_FILES);
         $sekolah->tambahSekolah();
     }
+    elseif($_GET['menu']=='label')
+    {
+        $sekolah->getAutoCompleteData();
+    }
 }
 else
 {

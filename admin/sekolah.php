@@ -114,7 +114,7 @@
                         <form role="form" id="tambah_sekolah" method="post">
                             <div class="form-group">
                                 <!--<label for="recipient-name" class="control-label">Recipient:</label>-->
-                                <input type="text" class="form-control" name="npsn" placeholder="NPSN" required>
+                                <input type="number" class="form-control" name="npsn" placeholder="NPSN" required>
                             </div>
                             <div class="form-group">
                                 <input type="text" class="form-control" name="nama_sekolah" placeholder="Nama Sekolah" required>
