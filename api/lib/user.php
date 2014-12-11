@@ -6,10 +6,11 @@
  * Time: 11:16
  * */
 
-require(realpath(dirname(__FILE__)) . '/vendor/autoload.php');
-require(realpath(dirname(__FILE__)) . '/berkas.php');
+require(realpath(dirname(__FILE__)) . '\vendor\autoload.php');
+require(realpath(dirname(__FILE__)) . '\berkas.php');
 use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
+
 
 
 class User {
@@ -248,6 +249,122 @@ class User {
         }
     }
 
+    //cek password
+    protected function cekPassword($username,$pass)
+    {
+        $sql='SELECT username,password FROM user WHERE username=:username AND password=:password';
+        try{
+            $exe=$this->_db->prepare($sql);
+            $exe->execute(array('username'=>$username,'password'=>$pass));
+            $hasil=$exe->rowCount();
+            if($hasil==1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch(PDOException $e)
+        {
+            //echo $e->getMessage();
+            return false;
+
+        }
+    }
+
+    //get username
+    protected function getAksesUsername($access_key)
+    {
+        $sql='SELECT username FROM v_akses_user WHERE access_key=:access_key';
+        try{
+            $exe=$this->_db->prepare($sql);
+            $exe->execute(array('access_key'=>$access_key));
+            $row  = $exe->fetchColumn();
+            $this->_username=$row;
+        }
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+    //Ubah password
+    public  function ubahPassword($access_key,$pass_lama,$pass_baru)
+    {
+        $this->getAksesUsername($access_key);
+        $key=$this->getKeygen($this->_username);
+        $pass=$pass_lama.$key;
+        $pass=hash('sha256',$pass);
+        $passbaru=$pass_baru.$key;
+        $passbaru=hash('sha256',$passbaru);
+        if($this->cekPassword($this->_username,$pass))
+        {
+            try{
+                $sql='UPDATE user SET password=:password WHERE username=:username';
+                $gantipass=$this->_db->prepare($sql);
+                $gantipass->execute(array('password'=>$passbaru,'username'=>$this->_username));
+
+                $hasil=array('hasil'=>'berhasil','pesan'=>'Password berhasil diubah');
+                echo json_encode($hasil);
+            }
+            catch(PDOException $e)
+            {
+                $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
+                echo json_encode($hasil);
+            }
+        }
+        else
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>'Password Lama anda tidak sama');
+            echo json_encode($hasil);
+        }
+    }
+
+    //detail user
+    public function getDetailUser($key)
+    {
+        $sql='SELECT nama_user,nama_sekolah,email,alamat,foto,username FROM v_akses_user WHERE access_key=:access_key';
+        try{
+            $exe=$this->_db->prepare($sql);
+            $exe->execute(array('access_key'=>$key));
+            $data=$exe->fetchAll(PDO::FETCH_ASSOC);
+            $hasil=array('data'=>$data);
+            echo json_encode($hasil);
+        }catch (PDOException $e)
+        {
+            $hasil=array('data'=>$e->getMessage());
+            echo json_encode($hasil);
+        }
+    }
+
+    //ubah profile
+    public function setValueUbah($username,$nama,$alamat,$email)
+    {
+        $this->_username=$username;
+        $this->_nama_user=$nama;
+        $this->_alamat=$alamat;
+        $this->_email=$email;
+    }
+    public function ubahProfile()
+    {
+        $sql='UPDATE user SET nama_user=:nama_user,alamat=:alamat,email=:email WHERE username=:username';
+        try{
+            $exe=$this->_db->prepare($sql);
+            $exe->execute(array('nama_user'=>$this->_nama_user,'alamat'=>$this->_alamat,'email'=>$this->_email,'username'=>$this->_username));
+
+            $hasil=array('hasil'=>'berhasil','pesan'=>'Perubahan profile berhasil dilakukan');
+            echo json_encode($hasil);
+        }
+        catch(PDOException $e){
+            $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
+            echo json_encode($hasil);
+        }
+
+    }
+
+
     public function __destruct()
     {
         $this->_db=null;
@@ -262,4 +379,6 @@ class User {
 //$user->setValue('azaejae','1','1','master','ahmad zaelani','karawang','ahmad@ahmad.com');
 //$user->tambahUser();
 //$user->userAuth('azaejae','master');
+//$user->ubahPassword('e919392b8f86d07090c12953e158d86f','master','rahasia');
+//$user->getDetailUser('a80199fc09829ea255b763230549a03e');
 

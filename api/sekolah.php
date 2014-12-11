@@ -11,8 +11,8 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Content-Range, Content-Disposition, Content-Description');
 
-require(realpath(dirname(__FILE__)) . '\lib\sekolah.php');
-require(realpath(dirname(__FILE__)) . '\lib\api.php');
+require(realpath(dirname(__FILE__)) . '/lib/sekolah.php');
+require(realpath(dirname(__FILE__)) . '/lib/api.php');
 //Api::auth();
 //ini_set('max_execution_time',0);
 $sekolah=new Sekolah();
@@ -34,5 +34,11 @@ else
 {
     $sekolah->getDataSekolah();
 }
-
+/*
+$password='master';
+$key='BwUNO8SHHTyLk0loDiB+ww==';
+$pass=$password.$key;
+$pass=hash('sha256',$pass);
+echo $pass;
 //
+*/

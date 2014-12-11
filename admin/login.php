@@ -39,7 +39,7 @@
                 <div class="form-group">
                   <input class="form-control" placeholder="Password" name="password" required type="password">
                 </div>
-                  <input type="submit" id="kirim" value="Login" class="btn btn-lg btn-success col-md-5">   <input type="submit" value="Reset" class="btn btn-lg btn-danger col-md-5 col-md-offset-2">
+                  <input type="submit" id="kirim" value="Login" class="btn btn-lg btn-success col-md-5">   <input type="reset" value="Reset" class="btn btn-lg btn-danger col-md-5 col-md-offset-2">
                 <!-- Change this to a button or input when using this as a form -->
                 <!--<a href="index.html" class="btn btn-lg btn-success col-md-5">Login</a> <a href="#" class="btn btn-lg btn-danger col-md-5 col-md-offset-2">Reset</a>-->
               </fieldset>

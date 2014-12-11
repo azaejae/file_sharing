@@ -29,10 +29,41 @@ if(isset($_GET['menu']))
         $user->uploadFoto($_FILES);
         $user->tambahUser();
     }
+    elseif($_GET['menu']=='ubah')
+    {
+        if(isset($_POST['username']))
+        {
+            $user->setValueUbah($_POST['username'],$_POST['nama_user'],$_POST['alamat'],$_POST['email']);
+            $user->ubahProfile();
+        }
+        else
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>'Data tidak boleh ada yang kosong');
+            echo json_encode($hasil);
+        }
+
+    }
+    elseif($_GET['menu']=='ubahpass')
+    {
+        if(isset($_GET['access_key']))
+        {
+            $user->ubahPassword($_GET['access_key'],$_POST['pass_lama'],$_POST['pass_baru']);
+        }
+        else
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>'Password Lama anda tidak sama');
+            echo json_encode($hasil);
+        }
+    }
     else
     {
         $user->getUserAktif();
     }
+}
+elseif(isset($_GET['detail']))
+{
+    $detail=$_GET['detail'];
+    $user->getDetailUser($detail);
 }
 else
 {

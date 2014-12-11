@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="js/jquery.min.js" ></script>
+    <script src="js/uri.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#bu').click(function(){
+                alert('ahmad');
+                $.getJSON("http://api.local/sekolah.php",function(result){
+                    $.each(result.data, function(i, sk){
+                        $("div").append("<img src="+sk.logo + " /></br>");
+                    });
+                });
+            });
+
+        });
+
+    </script>
+    <script>
+        r=new URI(window.location.href);
+        //alert(window.location.href);
+        var q= r.query();
+        if(r.hasQuery('nama',true))
+        {
+            var hasil= URI.parseQuery(q);
+            alert(hasil.nama);
+        }
+
+    </script>
+    <title>halaman Sekolah</title>
+</head>
+<body>
+<button id="bu">Get JSON data</button>
+<div></div>
+</body>
+</html>

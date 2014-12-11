@@ -205,7 +205,7 @@
   <!-- Page-Level Demo Scripts - Blank - Use for reference -->
 <script>
     $(document).ready(function(){
-        var urlTambah='http://api.local/sekolah.php?menu=tambah';
+        var urlTambah='http://api.poliga.me/sekolah.php?menu=tambah';
         //cek session
         /*if(sessionStorage.getItem('access_key')==null)
         {
@@ -222,7 +222,7 @@
         //$('#sekolah').dataTable();
 
         //get sekolah
-        $.getJSON("http://api.local/sekolah.php",function(result){
+        $.getJSON("http://api.poliga.me/sekolah.php",function(result){
             $.each(result.data, function(i, sk){
                 //alert(sk.nama_sekolah);
                 $("#sekolah tbody").append("<tr>" +
