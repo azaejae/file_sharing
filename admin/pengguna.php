@@ -97,7 +97,6 @@
       </div>
       <!-- END CONTENT HEADER -->
       <!-- /.row -->
-
       <!-- CONTENT -->
       <div class="row">
         <div class="col-md-6 text-left">
@@ -165,15 +164,15 @@
         <!-- END Small Modal-->
       <!-- TABLE -->
       <!-- /.row -->
-      <div class="row">
-        <div class="col-lg-12">
+      <div class="row tab-content">
+        <div class="col-lg-12 tab">
           <div class="panel panel-default">
 
             <!-- TITLE TABLE -->
             <div class="panel-heading">
               Daftar Pengguna
             </div>
-            <!-- /.panel-heading -->
+            <!-- panel-heading -->
             <div class="panel-body">
               <div class="table-responsive">
                 <table class="table table-striped table-bordered table-hover" id="pengguna">
@@ -232,12 +231,15 @@
         }
         alert(sessionStorage.access_key);
         */
+
+        //logout
         $('#logout').click(function(){
             alert('Anda Berhasil Logout');
             sessionStorage.clear();
             location.reload();
         });
 
+        //auto complete sekolah
         $("#sekolah").autocomplete({
             source: function( request, response ) {
                 $.ajax({
@@ -260,6 +262,7 @@
                 //$('#abbrev').val(ui.item.abbrev);
             }
         });
+
         //daftar pengguna
         $.getJSON("http://api.local/user.php",function(result){
             $.each(result.data, function(i, sk){

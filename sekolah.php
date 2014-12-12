@@ -13,11 +13,22 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
 
     <!-- Custom CSS -->
     <link href="css/style.css" rel="stylesheet">
-
+    <style>
+        ul {
+            padding:0 0 0 0;
+            margin:0 0 0 0;
+        }
+        ul li {
+            list-style:none;
+            margin-bottom:25px;
+        }
+        ul li img {
+            cursor: pointer;
+        }
+    </style>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -45,10 +56,10 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
+                    <li class="active">
                         <a href="#">Sekolah</a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="#">Pengajar</a>
                     </li>
                     <li>
@@ -57,8 +68,7 @@
                     <li>
                         <a href="#">Mendaftar</a>
                     </li>
-                    <li><a href="#">Login</a>
-                    </li>
+                    <li><a href="#">Login</a></li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -68,29 +78,14 @@
 
     <!-- Page Content -->
     <div class="container content">
-        <form action="">
-            <div class="col-sm-6 col-sm-offset-3">
-                <input type="text" name="" id="" class="form-control form-margin" placeholder="Username">
-                <input type="text" name="" id="" class="form-control form-margin" placeholder="Password">
-                <input type="text" name="" id="" class="form-control form-margin" placeholder="Nama Lengkap">
-                <input type="text" name="" id="" class="form-control form-margin" placeholder="Nama Sekolah">
-                <input type="email" name="" id="" class="form-control form-margin" placeholder="E-Mail">
-                <textarea name="" id="" cols="30" rows="10" class="form-control form-margin"></textarea>
-                <input type="file" name="" id="" class="form-control form-margin">
 
-            </div>
-            <div class="col-sm-6 col-sm-offset-3 form-margin">
-                <div class="col-sm-6">
-                    <button class="btn btn-success btn-block">Tambah Pengguna</button>
+        <div class="row">
+                <ul class="row text-center" id="daftar_sekolah">
 
-                </div>
-                <div class="col-sm-6">
-                    <button class="btn btn-danger btn-block">Reset</button>
+                </ul>
+        </div>
 
-                </div>
-            </div>
-
-        </form>
+        <hr>
 
     </div>
     <!-- /.container -->
@@ -100,6 +95,18 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+
+    <!-- Script to Activate the Carousel -->
+    <script>
+        $(document).ready(function(){
+            //get info sekolah
+            $.getJSON("http://api.local/sekolah.php",function(result){
+                $.each(result.data, function(i, sk){
+                    $("#daftar_sekolah").append("<li class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3\"><img width=\"150\" height=\"150\" src=\""+sk.logo+"\"><p>"+sk.nama_sekolah+"</p></li>");
+                });
+            });
+        });
+    </script>
 
 </body>
 

@@ -103,6 +103,7 @@ class Sekolah {
 
 
     }
+    //menampilkan data sekolah yang ada di sistem
 
     public function getDataSekolah()
     {
@@ -113,13 +114,14 @@ class Sekolah {
         echo json_encode($data);
     }
 
+    //data autocomplete sekolah
     public function getAutoCompleteData()
     {
-        $sql='SELECT nama_sekolah as label,npsn FROM sekolah';
+        $sql='SELECT nama_sekolah as label,npsn FROM sekolah WHERE npsn <> 1';
         if(isset($_GET['term']))
         {
             $nama=$_GET['term'];
-            $sql="SELECT nama_sekolah as label,npsn FROM sekolah WHERE nama_sekolah LIKE '%$nama%'";
+            $sql="SELECT nama_sekolah as label,npsn FROM sekolah WHERE nama_sekolah LIKE '%$nama%' AND npsn <> 1";
         }
 
         try{
@@ -133,6 +135,20 @@ class Sekolah {
         {
             $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
             echo json_encode($hasil);
+        }
+    }
+
+    //hapus Sekolah
+    public function hapusSekolah($npsn)
+    {
+        $sql='DELETE FROM sekolah WHERE npsn=:npsn';
+        try{
+            $exe=$this->_db->prepare($sql);
+            $exe->execute(array('npsn'=>$npsn));
+        }
+        catch(PDOException $e)
+        {
+
         }
     }
 
