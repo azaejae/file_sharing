@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title id="judul">Dashboard</title>
+  <title id="judul">Dashboard admin</title>
 
   <!-- Core CSS - Include with every page -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
