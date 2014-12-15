@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title id="judul">Index</title>
+  <title id="judul">Dashboard</title>
 
   <!-- Core CSS - Include with every page -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -19,7 +19,7 @@
 
 </head>
 
-<body>
+<body onload="cekSesi();">
 
   <div id="wrapper">
 
@@ -32,7 +32,7 @@
           <span class="icon-bar"></span>
         </button>
         <!-- Title Apps -->
-        <a class="navbar-brand" href="index.html">Title Apps</a>
+        <a class="navbar-brand" href="index.php">Admin Dashboard</a>
       </div>
       <!-- /.navbar-header -->
 
@@ -44,7 +44,7 @@
 
           <!-- buat logout -->
           <ul class="dropdown-menu dropdown-user">
-            <li><a href="#" id="logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+            <li><a href="#" onclick="logout();"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
             </li>
           </ul>
           <!-- /.dropdown-user -->
@@ -59,16 +59,16 @@
 
             <!-- SIDE LISET MENU -->
             <li>
-              <a href="index.html"><i class="fa fa-graduation-cap fa-fw"></i> Sekolah</a>
+              <a href="sekolah.php"><i class="fa fa-graduation-cap fa-fw"></i> Sekolah</a>
             </li>
             <li>
-              <a href="index.html"><i class="fa fa-group fa-fw"></i> Pengguna</a>
+              <a href="pengguna.php"><i class="fa fa-group fa-fw"></i> Pengguna</a>
             </li>
             <li>
-              <a href="index.html"><i class="fa fa-file-text-o fa-fw"></i> Berkas</a>
+              <a href="berkas.php"><i class="fa fa-file-text-o fa-fw"></i> Berkas</a>
             </li>
             <li>
-              <a href="index.html"><i class="fa fa-user fa-fw"></i> Profile</a>
+              <a href="profile.php"><i class="fa fa-user fa-fw"></i> Profile</a>
             </li>
           </ul>
           <!-- END SIDE LIST MENU -->
@@ -97,7 +97,7 @@
         <div class="col-lg-12 text-center">
           <img src="mamam.jpg" alt="">
           <h2>Selamat Datang Admin</h2>
-          <a href="#">Logout</a>
+          <a href="#" onclick="logout();">Logout</a>
         </div>
       </div>
       <!-- END CONTENT -->
@@ -277,6 +277,7 @@
   <script src="js/jquery-1.10.2.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+  <script src="js/ceksesi.js"></script>
 
   <!-- Page-Level Plugin Scripts - Blank -->
 
@@ -286,16 +287,7 @@
   <!-- Page-Level Demo Scripts - Blank - Use for reference -->
 <script>
     $(document).ready(function(){
-        if(sessionStorage.getItem('access_key')==null)
-        {
-            $(location).attr('href','login.php');
-        }
-        alert(sessionStorage.access_key);
-        $('#logout').click(function(){
-            alert('Anda Berhasil Logout');
-            sessionStorage.clear();
-            location.reload();
-        });
+
     });
 </script>
 </body>

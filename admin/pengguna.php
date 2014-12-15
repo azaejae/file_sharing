@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title id="judul">Index</title>
+    <title id="judul">Dashboard</title>
 
   <!-- Core CSS - Include with every page -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -25,7 +25,7 @@
 </style>
 </head>
 
-<body>
+<body onload="cekSesi();">
 
   <div id="wrapper">
 
@@ -38,7 +38,7 @@
           <span class="icon-bar"></span>
         </button>
         <!-- Title Apps -->
-        <a class="navbar-brand" href="index.html">Title Apps</a>
+        <a class="navbar-brand" href="index.php">Admin Dashboard</a>
       </div>
       <!-- /.navbar-header -->
 
@@ -50,7 +50,7 @@
 
           <!-- buat logout -->
           <ul class="dropdown-menu dropdown-user">
-            <li><a href="#" id="logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+            <li><a href="#" onclick="logout();"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
             </li>
           </ul>
           <!-- /.dropdown-user -->
@@ -59,31 +59,31 @@
       </ul>
       <!-- /.navbar-top-links -->
 
-      <div class="navbar-default navbar-static-side" role="navigation">
-        <div class="sidebar-collapse">
-          <ul class="nav" id="side-menu">
+        <div class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
 
-            <!-- SIDE LISET MENU -->
-            <li>
-              <a href="index.html"><i class="fa fa-graduation-cap fa-fw"></i> Sekolah</a>
-            </li>
-            <li>
-              <a href="index.html"><i class="fa fa-group fa-fw"></i> Pengguna</a>
-            </li>
-            <li>
-              <a href="index.html"><i class="fa fa-file-text-o fa-fw"></i> Berkas</a>
-            </li>
-            <li>
-              <a href="index.html"><i class="fa fa-user fa-fw"></i> Profile</a>
-            </li>
-          </ul>
-          <!-- END SIDE LIST MENU -->
+                    <!-- SIDE LISET MENU -->
+                    <li>
+                        <a href="sekolah.php"><i class="fa fa-graduation-cap fa-fw"></i> Sekolah</a>
+                    </li>
+                    <li>
+                        <a href="pengguna.php"><i class="fa fa-group fa-fw"></i> Pengguna</a>
+                    </li>
+                    <li>
+                        <a href="berkas.php"><i class="fa fa-file-text-o fa-fw"></i> Berkas</a>
+                    </li>
+                    <li>
+                        <a href="profile.php"><i class="fa fa-user fa-fw"></i> Profile</a>
+                    </li>
+                </ul>
+                <!-- END SIDE LIST MENU -->
 
-          <!-- /#side-menu -->
+                <!-- /#side-menu -->
+            </div>
+            <!-- /.sidebar-collapse -->
         </div>
-        <!-- /.sidebar-collapse -->
-      </div>
-      <!-- /.navbar-static-side -->
+        <!-- /.navbar-static-side -->
     </nav>
 
     <div id="page-wrapper">
@@ -215,6 +215,7 @@
   <script src="js/bootstrap.min.js"></script>
   <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
   <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+  <script src="js/ceksesi.js"></script>
 
   <!-- Page-Level Plugin Scripts - Blank -->
 

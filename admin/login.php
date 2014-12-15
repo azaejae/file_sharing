@@ -60,11 +60,11 @@
       $(document).ready(function(){
           if(sessionStorage.getItem('access_key')!==null)
           {
-              $(location).attr('href','snippet.html');
+              $(location).attr('href','index.php');
           }
           var host='http://api.local/user.php?menu=login'
             $('#login').submit(function(){
-                alert(host);
+                //alert(host);
                 $.ajax({
                         url : host,
                         type: "POST",
@@ -77,7 +77,7 @@
                                 //alert(respon.access_key);
                                 sessionStorage.access_key=respon.access_key;
                                 //alert(sessionStorage.access_key);
-                                $(location).attr('href','snippet.html');
+                                $(location).attr('href','index.php');
 
                             }
                             else

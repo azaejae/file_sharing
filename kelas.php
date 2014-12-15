@@ -70,56 +70,31 @@
     <div class="container content">
         <div class="row">
             <div class="col-sm-12">
-                <div class="col-sm-2">
-                    <h4>Daftar Kelas</h4>
-                </div>
-
-                <div class="col-sm-10">
-                    <form action="">
-                        <div class="col-sm-8 col-sm-offset-1">
-                            <input type="text" name="" id="" class="form-control col-sm-12" placeholder="anunya disini">
-                        </div>
-                        <div class="col-sm-3">
-                            <button class="btn btn-primary "><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;Cari Kelas</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <hr>
-<hr>
-            <div class="col-sm-12">
                 <!-- TABLE -->
                 <!-- /.row -->
                 <div class="panel panel-default">
 
                     <!-- TITLE TABLE -->
                     <div class="panel-heading">
-                        Table
+                        Daftar kelas
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover">
+                            <table class="table table-striped table-bordered table-hover" id="kelas">
                                 <thead>
                                     <tr>
-                                        <th>NPSN</th>
-                                        <th>Nama Sekolah</th>
-                                        <th>Alamat Sekolah</th>
-                                        <th>Status</th>
-                                        <th>Op</th>
+                                        <th>Pengajar</th>
+                                        <th>Nama kelas</th>
+                                        <th>Asal sekolah</th>
+                                        <th>Tingkat</th>
+                                        <th>Opsi</th>
                                     </tr>
                                 </thead>
 
                                 <!-- TABLE CONTENT -->
                                 <tbody>
-                                    <tr>
-                                        <td>2021780</td>
-                                        <td>SMKN 1 Cikampek</td>
-                                        <td>Jl. Pangkal Perjuangan</td>
-                                        <td>Negeri</td>
-                                        <td>Ubah</td>
-                                    </tr>
+
                                 </tbody>
                                 <!-- TABLE CONTENT -->
                             </table>
@@ -144,6 +119,37 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script>
+        var host='http://api.local/'
+        $(document).ready(function(){
+           alert('jalan');
+            //get semua data sekolah
+            $.getJSON(host+"kelas.php",function(result){
+                $.each(result.data, function(i, sk){
+                    //alert(sk.nama_sekolah);
+                    $("#kelas tbody").append("<tr>" +
+                    "<td>"+sk.nama_user+"</td>"+
+                    "<td>"+sk.nama_kelas+"</td>"+
+                    "<td>"+sk.nama_sekolah+"</td>"+
+                    "<td>"+sk.tingkat+"</td>"+
+                    "<td>" +
+                    "<a href='#' title='Detail Kelas' onclick='detailKelas(\""+sk.id_kelas+"\");'>Detail</a>"+
+                    "</td>"+
+                    "</tr>");
+                })
+            }).done(function(){
+                $('#kelas').dataTable();
+            });
+
+            //detial kelas
+
+        });
+        function detailKelas(id_kelas)
+        {
+            alert(id_kelas);
+        }
+    </script>
 
 </body>
 

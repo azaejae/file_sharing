@@ -31,6 +31,10 @@ if(isset($_GET['menu']))
         $pengajar->uploadFoto($_FILES);
         $pengajar->tambahPengajar();
     }
+    elseif($_GET['menu']=='kelas')
+    {
+
+    }
     else
     {
 

@@ -364,6 +364,27 @@ class User {
 
     }
 
+    //cek akses key
+    public static function cekAccessKey()
+    {
+        if(isset($_GET['access_key']))
+        {
+            $sql='SELECT access_key FROM access_key WHERE access_key=:access_key';
+            $koneksi=DbConn::getConnection();
+            $exe=$koneksi->prepare($sql);
+            $exe->execute(array('access_key'=>$_GET['access_key']));
+            $hasil=$exe->rowCount();
+
+            if($hasil>0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
 
     public function __destruct()
     {

@@ -13,7 +13,9 @@
                     });
                 });
             });
-
+            $('#usa').click(function(){
+                $('#country').val("United State");
+            });
         });
 
     </script>
@@ -32,6 +34,13 @@
 </head>
 <body>
 <button id="bu">Get JSON data</button>
+<button id="usa">USA</button>
+<select id="country">
+    <option value="None">-- Select --</option>
+    <option value="China">China</option>
+    <option value="United State">United State</option>
+    <option value="Malaysia">Malaysia</option>
+</select>
 <div></div>
 </body>
 </html>

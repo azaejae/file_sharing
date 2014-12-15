@@ -29,6 +29,27 @@ if(isset($_GET['menu']))
     {
         $sekolah->getAutoCompleteData();
     }
+    elseif($_GET['menu']=='hapus')
+    {
+        $sekolah->hapusSekolah($_GET['npsn']);
+    }
+    elseif($_GET['menu']=='ubah')
+    {
+        $sekolah->uploadLogo($_FILES);
+        $sekolah->ubahSekolah($_POST['npsn'],$_POST['nama_sekolah'],$_POST['alamat'],$_POST['status']);
+    }
+    elseif($_GET['menu']=='detail')
+    {
+        if($_GET['npsn'])
+        {
+            $sekolah->detailSekolah($_GET['npsn']);
+        }
+
+    }
+    else
+    {
+
+    }
 }
 else
 {

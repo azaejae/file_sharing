@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title id="judul">Index</title>
+    <title id="judul">Dashboard</title>
 
   <!-- Core CSS - Include with every page -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -19,7 +19,7 @@
 
 </head>
 
-<body>
+<body onload="cekSesi();">
 
   <div id="wrapper">
 
@@ -32,7 +32,7 @@
           <span class="icon-bar"></span>
         </button>
         <!-- Title Apps -->
-        <a class="navbar-brand" href="index.html">Dashboard</a>
+          <a class="navbar-brand" href="index.php">Admin Dashboard</a>
       </div>
       <!-- /.navbar-header -->
 
@@ -44,7 +44,7 @@
 
           <!-- buat logout -->
           <ul class="dropdown-menu dropdown-user">
-            <li><a href="#" id="logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+            <li><a href="#" onclick="logout();"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
             </li>
           </ul>
           <!-- /.dropdown-user -->
@@ -53,31 +53,31 @@
       </ul>
       <!-- /.navbar-top-links -->
 
-      <div class="navbar-default navbar-static-side" role="navigation">
-        <div class="sidebar-collapse">
-          <ul class="nav" id="side-menu">
+        <div class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
 
-            <!-- SIDE LISET MENU -->
-            <li>
-              <a href="sekolah.php"><i class="fa fa-graduation-cap fa-fw"></i> Sekolah</a>
-            </li>
-            <li>
-              <a href="index.html"><i class="fa fa-group fa-fw"></i> Pengguna</a>
-            </li>
-            <li>
-              <a href="index.html"><i class="fa fa-file-text-o fa-fw"></i> Berkas</a>
-            </li>
-            <li>
-              <a href="index.html"><i class="fa fa-user fa-fw"></i> Profile</a>
-            </li>
-          </ul>
-          <!-- END SIDE LIST MENU -->
+                    <!-- SIDE LISET MENU -->
+                    <li>
+                        <a href="sekolah.php"><i class="fa fa-graduation-cap fa-fw"></i> Sekolah</a>
+                    </li>
+                    <li>
+                        <a href="pengguna.php"><i class="fa fa-group fa-fw"></i> Pengguna</a>
+                    </li>
+                    <li>
+                        <a href="berkas.php"><i class="fa fa-file-text-o fa-fw"></i> Berkas</a>
+                    </li>
+                    <li>
+                        <a href="profile.php"><i class="fa fa-user fa-fw"></i> Profile</a>
+                    </li>
+                </ul>
+                <!-- END SIDE LIST MENU -->
 
-          <!-- /#side-menu -->
+                <!-- /#side-menu -->
+            </div>
+            <!-- /.sidebar-collapse -->
         </div>
-        <!-- /.sidebar-collapse -->
-      </div>
-      <!-- /.navbar-static-side -->
+        <!-- /.navbar-static-side -->
     </nav>
 
     <div id="page-wrapper">
@@ -95,14 +95,14 @@
       <!-- CONTENT -->
       <div class="row">
         <div class="col-lg-3 text-left">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-md">Tambah Sekolah</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mtambah_sekolah">Tambah Sekolah</button>
         </div>
       </div>
       <!-- END CONTENT -->
         <!-- Small modal -->
 
 
-        <div class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal fade bs-example-modal-md" id="mtambah_sekolah" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-md">
 
                 <div class="modal-content">
@@ -146,6 +146,50 @@
         </div>
 
         <!-- END Small Modal-->
+        <!--  Ubah Sekolah Form -->
+        <div class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" id="m_ubah_sekolah" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Form Ubah sekolah</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" id="ubah_sekolah" method="post">
+                            <div class="form-group">
+                                <!--<label for="recipient-name" class="control-label">Recipient:</label>-->
+                                <input type="number" class="form-control" name="npsn" id="npsn" readonly placeholder="NPSN" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="nama_sekolah" id="nama_sekolah" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="status" class="control-label">Status : </label>
+                                <select name="status" id="status" class="form-control">
+                                    <option value="Negeri">Negeri</option>
+                                    <option value="Swasta">Swasta</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <!--<label for="message-text" class="control-label">Message:</label>-->
+                                <textarea class="form-control" id="alamat" name="alamat" placeholder="Alamat" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="logo" class="control-label">Logo :</label>
+                                <input type="file"  name="logo" id="ubah_logo"  required>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-primary text-right" value="Ubah">
+                                <input type="reset" class="btn btn-danger text-left" value="Reset">
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- END ubah sekolah -->
       <!-- TABLE -->
       <!-- /.row -->
       <div class="row">
@@ -204,8 +248,9 @@
 
   <!-- Page-Level Demo Scripts - Blank - Use for reference -->
 <script>
+    var host='http://api.local/';
     $(document).ready(function(){
-        var urlTambah='http://api.poliga.me/sekolah.php?menu=tambah';
+        //var urlTambah='http://api.poliga.me/sekolah.php?menu=tambah';
         //cek session
         /*if(sessionStorage.getItem('access_key')==null)
         {
@@ -230,7 +275,10 @@
                     "<td>"+sk.nama_sekolah+"</td>"+
                     "<td>"+sk.alamat_sekolah+"</td>"+
                     "<td>"+sk.status+"</td>"+
-                    "<td>Hapus | Ubah</td>"+
+                    "<td>" +
+                        "<a href='#' title='hapus' onclick='hapusSekolah("+sk.npsn+");'><span class='glyphicon glyphicon-trash'></span></a> | "+
+                        "<a href='#' title='edit' onclick='editSekolah("+sk.npsn+");'><span class='glyphicon glyphicon-edit'><span></a>"+
+                    "</td>"+
                 "</tr>");
             })
         }).done(function(){
@@ -242,7 +290,7 @@
             alert('form tambah');
             var formData = new FormData($(this)[0]);
             $.ajax({
-                url : urlTambah,
+                url : host+'sekolah.php?menu=tambah',
                 type: "POST",
                 //mimeType : "multipart/form-data",
                 data : formData,
@@ -269,7 +317,81 @@
             });
             return false;
         });
+
+        //form kirim data ubah sekolah
+        $('#ubah_sekolah').submit(function(){
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url : host+'sekolah.php?&menu=ubah&access_key='+sessionStorage.getItem('access_key'),
+                type: "POST",
+                //mimeType : "multipart/form-data",
+                data : formData,
+                async: false,
+                dataType: "JSON",
+                success: function(respon)
+                {
+                    if(respon.hasil==='berhasil')
+                    {
+                        alert(respon.pesan);
+                        window.location.reload();
+
+                    }
+                    else
+                    {
+                        alert(respon.pesan);
+
+                    }
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+            return false;
+        });
+
     });
+
+    //hapus sekolah
+    function hapusSekolah(npsn)
+    {
+        if (confirm('Anda yakin akan menghapus data ini?')) {
+            //hapus
+            $.getJSON(host+"sekolah.php",{
+                menu : "hapus",
+                npsn : npsn,
+                access_key : sessionStorage.getItem('access_key')
+            }).done(function(data){
+                alert(data.pesan);
+            });
+        } else {
+            //batal
+            //alert('batal');
+        }
+
+    }
+
+    //edit Sekolah
+
+    function editSekolah(npsn)
+    {
+        $.getJSON(host+"sekolah.php",{
+            menu : "detail",
+            npsn : npsn
+            //access_key : sessionStorage.getItem('access_key')
+        }).done(function(data){
+            $.each(data,function(i, hasil){
+                $('#npsn').val(hasil.npsn);
+                $('#nama_sekolah').val(hasil.nama_sekolah);
+                $('#status').val(hasil.status);
+                $('#alamat').val(hasil.alamat_sekolah);
+                //$('#ubah_logo').val(hasil.logo);
+            });
+            $('#m_ubah_sekolah').modal('show');
+        });
+
+    }
+
+
 </script>
 </body>
 

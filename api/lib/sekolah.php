@@ -9,7 +9,8 @@
  */
 
 require(realpath(dirname(__FILE__)) . '/vendor/autoload.php');
-require(realpath(dirname(__FILE__)) . '/berkas.php');
+//require(realpath(dirname(__FILE__)) . '/berkas.php');
+require(realpath(dirname(__FILE__)) . '/user.php');
 use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
 class Sekolah {
@@ -30,6 +31,7 @@ class Sekolah {
         $this->_db = DbConn::getConnection();
     }
 
+    //set atribut
     public function setAtribut($NPSN,$nama_sekolah,$alamat_sekolah,$status)
     {
         $this->_NPSN=$NPSN;
@@ -38,6 +40,7 @@ class Sekolah {
         $this->_status=$status;
     }
 
+    //upload logo ke aws
     public function uploadLogo($logo)
     {
         ini_set('max_execution_time', 0);
@@ -83,6 +86,7 @@ class Sekolah {
         }
     }
 
+    //tambah sekolah ke basis data
     public function tambahSekolah()
     {
         try{
@@ -141,14 +145,87 @@ class Sekolah {
     //hapus Sekolah
     public function hapusSekolah($npsn)
     {
-        $sql='DELETE FROM sekolah WHERE npsn=:npsn';
+        if(isset($_GET['npsn']))
+        {
+            if(User::cekAccessKey())
+            {
+                $sql='DELETE FROM sekolah WHERE npsn=:npsn';
+                try{
+                    $exe=$this->_db->prepare($sql);
+                    $exe->execute(array('npsn'=>$npsn));
+                    $hasil=array('hasil'=>'berhasil','pesan'=>'Sekolah berhasil dihapus');
+                    echo json_encode($hasil);
+                }
+                catch(PDOException $e)
+                {
+                    $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
+                    echo json_encode($hasil);
+                }
+            }
+            else
+            {
+                $hasil=array('hasil'=>'gagal','pesan'=>'Akes Ditolak');
+                echo json_encode($hasil);
+            }
+        }
+        else
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>'Data Sekolah tidak ditemukan');
+            echo json_encode($hasil);
+        }
+
+
+    }
+
+    //ubah data sekolah
+    public function ubahSekolah($NPSN,$nama_sekolah,$alamat_sekolah,$status)
+    {
+        if(isset($_POST['npsn']))
+        {
+            if(User::cekAccessKey())
+            {
+                $sql='UPDATE sekolah SET nama_sekolah=:nama_sekolah, alamat_sekolah=:alamat, status=:status, logo=:logo WHERE npsn=:npsn';
+                try{
+                    $exe=$this->_db->prepare($sql);
+                    $exe->execute(array('nama_sekolah'=>$nama_sekolah,'alamat'=>$alamat_sekolah,'status'=>$status,'logo'=>$this->_logo,'npsn'=>$NPSN));
+                    $hasil=array('hasil'=>'berhasil','pesan'=>'Data sekolah berhasil diubah');
+                    echo json_encode($hasil);
+                }
+                catch(PDOException $e)
+                {
+                    $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
+                    echo json_encode($hasil);
+                }
+
+            }
+            else
+            {
+                $hasil=array('hasil'=>'gagal','pesan'=>'Akes Ditolak');
+                echo json_encode($hasil);
+            }
+        }
+        else
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>'Data Sekolah tidak bisa diubah');
+            echo json_encode($hasil);
+        }
+    }
+
+    //detail sekolah
+    public function detailSekolah($npsn)
+    {
+        $sql="SELECT *FROM sekolah WHERE npsn='$npsn'";
         try{
-            $exe=$this->_db->prepare($sql);
-            $exe->execute(array('npsn'=>$npsn));
+
+            $hasil=$this->_db->query($sql);
+            $data=$hasil->fetchAll(PDO::FETCH_ASSOC);
+            //$data=array('data'=>$data);
+            echo json_encode($data);
         }
         catch(PDOException $e)
         {
-
+            $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
+            echo json_encode($hasil);
         }
     }
 

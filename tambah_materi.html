@@ -7,11 +7,11 @@
 </head>
 <body>
 <script>
-    function sha1sum() {
+    function md5sum() {
         var oFile = document.getElementById('berkas').files[0];
         var sha1 = CryptoJS.algo.MD5.create();
         var read = 0;
-        var unit = 1024 * 1024;
+        var unit = 1024 * 1024 ;
         var blob;
         var reader = new FileReader();
         reader.readAsArrayBuffer(oFile.slice(read, read + unit));
@@ -21,11 +21,12 @@
             read += unit;
             if (read < oFile.size) {
                 blob = oFile.slice(read, read + unit);
+
                 reader.readAsArrayBuffer(blob);
-            } else {
+           } else {
                 var hash = sha1.finalize();
                 alert(hash.toString(CryptoJS.enc.Hex)); // print the result
-            }
+           }
         }
     }
 </script>
