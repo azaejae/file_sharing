@@ -93,7 +93,7 @@ class Kelas extends User{
     //get kelas
     public function getKelas()
     {
-        $sql='SELECT * FROM v_kelas_pengajar_sekolah';
+        $sql='SELECT * FROM v_pengajar_kelas_dari_sekolah';
         $hasil=$this->_db->query($sql);
         $data=$hasil->fetchAll(PDO::FETCH_ASSOC);
         $data=array('data'=>$data);
@@ -106,7 +106,7 @@ class Kelas extends User{
         if(isset($_GET['access_key']))
         {
             $this->getAksesUsername($_GET['access_key']);
-            $sql='SELECT * FROM v_kelas_pengajar_sekolah WHERE username=:username';
+            $sql='SELECT * FROM v_pengajar_kelas_dari_sekolah WHERE id_pengajar=:username';
             try{
                 $exe=$this->_db->prepare($sql);
                 $exe->execute(array('username'=>$this->_username));
@@ -120,6 +120,45 @@ class Kelas extends User{
                 echo json_encode($hasil);
 
             }
+        }
+    }
+
+    //detail kelas
+    public function detailKelas($id_kelas)
+    {
+        $sql="SELECT * FROM v_detail_kelas WHERE id_kelas=:id_kelas";
+        try{
+            $exe=$this->_db->prepare($sql);
+            $exe->execute(array('id_kelas'=>$id_kelas));
+            $data=$exe->fetchAll(PDO::FETCH_ASSOC);
+            $hasil=array('data'=>$data);
+            echo json_encode($hasil);
+        }
+        catch(PDOException $e)
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
+            echo json_encode($hasil);
+
+        }
+    }
+
+    //get materi kelas
+    public function getMateriKelas($id_kelas)
+    {
+        $sql="SELECT * FROM v_materi_kelas WHERE id_kelas=:id_kelas";
+        try{
+            $exe=$this->_db->prepare($sql);
+            $exe->execute(array('id_kelas'=>$id_kelas));
+            $data=$exe->fetchAll(PDO::FETCH_ASSOC);
+            $hasil=array('data'=>$data);
+            echo json_encode($hasil);
+
+        }
+        catch(PDOException $e)
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
+            echo json_encode($hasil);
+
         }
     }
 }

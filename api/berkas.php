@@ -5,7 +5,9 @@
  * Date: 28/11/2014
  * Time: 13:52
  */
-require(realpath(dirname(__FILE__)) . '\lib\berkas.php');
+ini_set('display_errors', '1');
+header('Access-Control-Allow-Origin: *');
+require(realpath(dirname(__FILE__)) . '/lib/berkas.php');
 
 //DbConn::getConnection();
 /*$berkas= new Berkas();
@@ -18,5 +20,12 @@ $berkas->getBerkas();
 */
 $berkas= new Berkas();
 //echo $berkas->cariHash('a1f3c2300f5cbf1992a90211d45ed331');
-echo Berkas::fileHashing('berkas.php');
-
+if(isset($_GET['menu']))
+{
+    if($_GET['menu']=='check')
+    {
+        $hash=$berkas->cariHash($_GET['hash']);
+        $hasil=array('hasil'=>'berhasil','pesan'=>$hash);
+        echo json_encode($hasil);
+    }
+}

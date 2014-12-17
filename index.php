@@ -26,43 +26,83 @@
 
 </head>
 
-<body>
+<body onload="showMenu();">
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Open School Indonesia</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="#">Sekolah</a>
-                    </li>
-                    <li>
-                        <a href="#">Pengajar</a>
-                    </li>
-                    <li>
-                        <a href="#">Kelas</a>
-                    </li>
-                    <li>
-                        <a href="#">Mendaftar</a>
-                    </li>
-                    <li><a href="#">Login</a></li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="before_login" style="display: none">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Open School Indonesia</a>
         </div>
-        <!-- /.container -->
-    </nav>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="sekolah.php">Sekolah</a>
+                </li>
+                <li>
+                    <a href="pengajar.php">Pengajar</a>
+                </li>
+                <li>
+                    <a href="kelas.php">Kelas</a>
+                </li>
+                <li>
+                    <a href="mendaftar.php">Mendaftar</a>
+                </li>
+                <li><a href="login.php">Login</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<!-- nav after login -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="after_login" style="display: none">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Open School Indonesia</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="sekolah.php">Sekolah</a>
+                </li>
+                <li>
+                    <a href="pengajar.php">Pengajar</a>
+                </li>
+                <li>
+                    <a href="kelas.php">Kelas</a>
+                </li>
+                <li>
+                    <a href="dashboard.php">Dashboard</a>
+                </li>
+                <li><a href="#" onclick="logout();">Logout</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<!--End Nav after login-->
 
     <!-- Full Page Image Background Carousel Header -->
     <header id="myCarousel" class="carousel slide">
@@ -128,6 +168,7 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/sesi.js"></script>
 
     <!-- Script to Activate the Carousel -->
     <script>

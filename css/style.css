@@ -40,11 +40,15 @@ footer {
   
 }
 #login{
-    width: 400;
+    width: 400px;
     background-color : #a6e1ec;
     border: 3px solid;
     border-color: #2e6da4;
     padding: 10px 50px;
     border-radius: 8px;
 
+}
+
+.waiter{
+    display: none;
 }

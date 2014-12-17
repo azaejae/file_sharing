@@ -62,7 +62,7 @@
           {
               $(location).attr('href','index.php');
           }
-          var host='http://api.local/user.php?menu=login'
+          var host='http://api.osindonesia.org/user.php?menu=login'
             $('#login').submit(function(){
                 //alert(host);
                 $.ajax({

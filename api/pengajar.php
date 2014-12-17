@@ -7,6 +7,7 @@
  * Time: 08:39
  * 
  */
+ini_set('display_errors', '1');
 header('Access-Control-Allow-Origin: *');
 require(realpath(dirname(__FILE__)) . '/lib/pengajar.php');
 $pengajar =new Pengajar();
@@ -37,6 +38,11 @@ if(isset($_GET['menu']))
     }
     else
     {
+        $pengajar->getPengajar();
 
     }
+}
+else
+{
+    $pengajar->getPengajar();
 }

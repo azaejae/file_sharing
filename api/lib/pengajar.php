@@ -8,7 +8,7 @@
  * 
  */
 
-require(realpath(dirname(__FILE__)) . '\user.php');
+require(realpath(dirname(__FILE__)) . '/user.php');
 class Pengajar extends User {
 
 
@@ -75,6 +75,23 @@ class Pengajar extends User {
         {
             $pesan=array('hasil'=>'gagal','pesan'=>$e->getMessage());
             echo json_encode($pesan);
+        }
+    }
+
+    //get pengajar
+    public function getPengajar()
+    {
+        $sql="SELECT npsn, nama_sekolah, nama_user as nama_pengajar, username as id_pengajar FROM v_pengguna WHERE jenis_user='pengajar'";
+        try{
+            $exe=$this->_db->query($sql);
+            $data=$exe->fetchAll(PDO::FETCH_ASSOC);
+            $hasil=array('data'=>$data);
+            echo json_encode($hasil);
+        }
+        catch(PDOException $e)
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
+            echo json_encode($hasil);
         }
     }
 

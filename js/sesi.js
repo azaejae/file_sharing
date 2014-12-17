@@ -17,6 +17,19 @@ function sesiPengajar()
     }
 }
 
+function showMenu()
+{
+    if(sessionStorage.getItem('token')==null)
+    {
+
+        $('#before_login').show();
+    }
+    else
+    {
+        $('#after_login').show();
+    }
+}
+
 function logout()
 {
     //logout

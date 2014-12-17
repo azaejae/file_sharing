@@ -46,18 +46,18 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="#">Sekolah</a>
-                    </li>
-                    <li class="active">
-                        <a href="#">Pengajar</a>
+                        <a href="sekolah.php">Sekolah</a>
                     </li>
                     <li>
-                        <a href="#">Kelas</a>
+                        <a href="pengajar.php">Pengajar</a>
                     </li>
                     <li>
-                        <a href="#">Mendaftar</a>
+                        <a href="kelas.php">Kelas</a>
                     </li>
-                    <li><a href="#">Login</a>
+                    <li>
+                        <a href="mendaftar.php">Mendaftar</a>
+                    </li>
+                    <li><a href="login.php">Login</a>
                     </li>
                 </ul>
             </div>
@@ -83,16 +83,16 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="#">Sekolah</a>
+                        <a href="sekolah.php">Sekolah</a>
+                    </li>
+                    <li>
+                        <a href="pengajar.php">Pengajar</a>
+                    </li>
+                    <li>
+                        <a href="kelas.php">Kelas</a>
                     </li>
                     <li class="active">
-                        <a href="#">Pengajar</a>
-                    </li>
-                    <li>
-                        <a href="#">Kelas</a>
-                    </li>
-                    <li>
-                        <a href="#">Dashboard</a>
+                        <a href="dashboard.php">Dashboard</a>
                     </li>
                     <li><a href="#" onclick="logout();">Logout</a>
                     </li>
@@ -299,7 +299,7 @@
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
-                                            Daftar kelas <button id="bt_tambah_kelas" class="btn btn-primary">Tambah Kelas</button>
+                                            Daftar kelas <button id="bt_tambah_kelas" class="btn btn-primary">Buat Kelas</button>
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
@@ -307,7 +307,7 @@
                                                     <thead>
                                                     <tr>
                                                         <th width="22%">Nama kelas</th>
-                                                        <th width="5">Tingkat</th>
+                                                        <th width="5%">Tingkat</th>
                                                         <th width="25%">Tujuan</th>
                                                         <th width="40%">Deskripsi</th>
                                                         <th width="5%">Opsi</th>
@@ -373,11 +373,25 @@
                                                             <h4 class="modal-title" id="myModalLabel">Form tambah materi</h4>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form role="form" id="form_upload_materi" method="post">
+                                                            <form role="form" id="form_upload_materi" enctype="multipart/form-data" method="post">
                                                                 <div class="form-group">
-                                                                    <input type="hidden" name="hash_file" id="hash_file">
-                                                                    <input type="submit" class="btn btn-primary text-right" value="Tambah">
-                                                                    <input type="reset" class="btn btn-danger text-left" value="Reset">
+                                                                    <label for="berkas_materi">Berkas materi</label>
+                                                                    <input class="form-control" type="file" id="berkas_materi" name="berkas_materi">
+                                                                </div>
+                                                            </form>
+                                                            <img class="waiter" src="css/images/waiter.gif" />
+                                                            <form role="form" id="form_detail_materi" style=" display: none ;">
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control" name="judul_materi" required placeholder="Judul materi">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <textarea class="form-control" name="tujuan_materi" required placeholder="Tujuan materi" ></textarea>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <textarea class="form-control" name="deskripsi_materi" required placeholder="Deskripsi materi"></textarea>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <input type="submit" class="btn btn-primary btn-lg" value="Simpan">
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -419,9 +433,11 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/sesi.js"></script>
     <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
+    <script src='http://crypto-js.googlecode.com/svn/tags/3.1.2/build/components/lib-typedarrays-min.js'></script>
 
         <script>
-            var host='http://api.local/';
+            var host='http://api.osindonesia.org/';
             $(document).ready(function(){
                 if(sessionStorage.getItem('token')==null)
                 {
@@ -561,6 +577,50 @@
             function tambahMateri(idkelas)
             {
                 $('#tambah_materi').modal('show');
+
+                //check hash berkas
+                $('#berkas_materi').change(function(){
+                    $('.waiter').show();
+                    var oFile = document.getElementById('berkas_materi').files[0];
+                    var sha1 = CryptoJS.algo.MD5.create();
+                    var read = 0;
+                    var unit = 64 * 16 * 1024 ;
+                    var blob;
+                    var reader = new FileReader();
+                    reader.readAsArrayBuffer(oFile.slice(read, read + unit));
+                    reader.onload = function(e) {
+                        var bytes = CryptoJS.lib.WordArray.create(e.target.result);
+                        sha1.update(bytes);
+                        read += unit;
+                        if (read < oFile.size) {
+                            blob = oFile.slice(read, read + unit);
+                            reader.readAsArrayBuffer(blob);
+                        } else {
+                            var hash = sha1.finalize();
+                            var final = hash.toString(CryptoJS.enc.Hex);
+                            //check hash di server
+                            $.getJSON(host+"berkas.php",{
+                                menu : 'check',
+                                hash : final
+                            }).done(function(result){
+                                $('.waiter').hide();
+                                if(result.pesan==final)
+                                {
+                                    $('#form_upload_materi').hide();
+                                    $('#form_detail_materi').show();
+                                }
+                                else
+                                {
+                                    //upload berkas
+
+                                    $('#form_upload_materi').hide();
+                                    $('#form_detail_materi').show();
+                                }
+                            });
+                        }
+
+                    }
+                });
             }
         </script>
 

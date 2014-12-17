@@ -5,8 +5,9 @@
  * Date: 05/12/2014
  * Time: 16:56
  */
+ini_set('display_errors', '1');
 header('Access-Control-Allow-Origin: *');
-require(realpath(dirname(__FILE__)) . '\lib\user.php');
+require(realpath(dirname(__FILE__)) . '/lib/user.php');
 $user=new User();
 //user Auth
 if(isset($_GET['menu']))
@@ -53,6 +54,16 @@ if(isset($_GET['menu']))
         {
             $hasil=array('hasil'=>'gagal','pesan'=>'Password Lama anda tidak sama');
             echo json_encode($hasil);
+        }
+    }elseif($_GET['menu']=='hapus')
+    {
+        if(isset($_GET['username']))
+        {
+            $user->hapusPengguna($_GET['username']);
+        }
+        else
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>'Username tidak ada');
         }
     }
     else

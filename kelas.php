@@ -27,44 +27,83 @@
 
 </head>
 
-<body>
+<body onload="showMenu();">
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Open School Indonesia</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="#">Sekolah</a>
-                    </li>
-                    <li class="active">
-                        <a href="#">Pengajar</a>
-                    </li>
-                    <li>
-                        <a href="#">Kelas</a>
-                    </li>
-                    <li>
-                        <a href="#">Mendaftar</a>
-                    </li>
-                    <li><a href="#">Login</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="before_login" style="display: none">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Open School Indonesia</a>
         </div>
-        <!-- /.container -->
-    </nav>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="sekolah.php">Sekolah</a>
+                </li>
+                <li>
+                    <a href="pengajar.php">Pengajar</a>
+                </li>
+                <li class="active">
+                    <a href="kelas.php">Kelas</a>
+                </li>
+                <li>
+                    <a href="mendaftar.php">Mendaftar</a>
+                </li>
+                <li><a href="login.php">Login</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<!-- nav after login -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="after_login" style="display: none">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Open School Indonesia</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="sekolah.php">Sekolah</a>
+                </li>
+                <li>
+                    <a href="pengajar.php">Pengajar</a>
+                </li>
+                <li class="active">
+                    <a href="kelas.php">Kelas</a>
+                </li>
+                <li>
+                    <a href="dashboard.php">Dashboard</a>
+                </li>
+                <li><a href="#" onclick="logout();">Logout</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<!--End Nav after login-->
 
     <!-- Page Content -->
     <div class="container content">
@@ -108,10 +147,40 @@
                 <!-- END TABLE -->
             </div>
         </div>
+        <!-- detail kelas  -->
+        <div class="modal fade bs-example-modal-lg" id="detail_kelas" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
 
-        <hr>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Detail kelas</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="pengajar"></p><br>
+                        <table class="table table-responsive">
+                            <tr>
+                                <td>Tujuan</td>
+                                <td id="tujuan"></td>
+                            </tr>
+                            <tr>
+                                <td>Deskripsi</td>
+                                <td id="deskripsi"></td>
+                            </tr>
+                        </table>
+                        <p>Daftar materi</p>
+                        <div id="daftar_materi">
 
-    </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- END detail kelas kelas -->
+        </div>
+
     <!-- /.container -->
 
     <!-- jQuery -->
@@ -120,21 +189,22 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="js/sesi.js"></script>
     <script>
-        var host='http://api.local/'
+        var host='http://api.osindonesia.org/'
         $(document).ready(function(){
-           alert('jalan');
+           //alert('jalan');
             //get semua data sekolah
             $.getJSON(host+"kelas.php",function(result){
                 $.each(result.data, function(i, sk){
                     //alert(sk.nama_sekolah);
                     $("#kelas tbody").append("<tr>" +
-                    "<td>"+sk.nama_user+"</td>"+
+                    "<td>"+sk.nama_pengajar+"</td>"+
                     "<td>"+sk.nama_kelas+"</td>"+
                     "<td>"+sk.nama_sekolah+"</td>"+
                     "<td>"+sk.tingkat+"</td>"+
                     "<td>" +
-                    "<a href='#' title='Detail Kelas' onclick='detailKelas(\""+sk.id_kelas+"\");'>Detail</a>"+
+                    "<a href='#' title='Detail Kelas' onclick='detailKelas(\""+sk.id_kelas+"\");'>Detail</a><img class='waiter' src='css/images/waiter.gif' />"+
                     "</td>"+
                     "</tr>");
                 })
@@ -147,7 +217,53 @@
         });
         function detailKelas(id_kelas)
         {
-            alert(id_kelas);
+            $('.waiter').show();
+            $.getJSON(host+"kelas.php?menu=detail&id_kelas="+id_kelas,function(result){
+                $('#pengajar').empty();
+                $('#pengajar').append("Pengajar : "+result.data[0].nama_user);
+                $('#tujuan').empty();
+                $('#tujuan').append(result.data[0].tujuan_kelas);
+                $('#deskripsi').empty();
+                $('#deskripsi').append(result.data[0].deskripsi_kelas);
+            }).done(function(){
+                $.getJSON(host+"kelas.php?menu=materi&id_kelas="+id_kelas,function(result){
+                    if(result.data.length==0)
+                    {
+                        $('#daftar_materi').empty();
+                        $('#daftar_materi').append("<p>Tidak ada materi di kelas ini</p>");
+                    }
+                    else
+                    {
+                        $('#daftar_materi').empty();
+                        $('#daftar_materi').append("<table class='table table-responsive table-bordered' id='t_materi'>" +
+                        "<thead>" +
+                        "<tr>" +
+                        "<td>Judul materi</td>" +
+                        "<td>Tujuan</td>" +
+                        "<td>Deskripsi</td>" +
+                        "<td>Author</td>" +
+                        "<td>Opsi</td>" +
+                        "</tr>" +
+                        "</thead>" +
+                        "<tbody></tbody>");
+                        $.each(result.data,function(i,sk){
+                            $('#t_materi tbody').append(
+                                "<tr>" +
+                                "<td>"+sk.judul_materi+"</td>" +
+                                "<td>"+sk.tujuan_materi+"</td>" +
+                                "<td>"+sk.deskripsi_materi+"</td>" +
+                                "<td>"+sk.author+"</td>" +
+                                "<td><a href="+sk.href+">Unduh</a></td>" +
+                                "</tr>"
+                            );
+                        $('#daftar_materi').append("<table>");
+                        });
+                    }
+
+                });
+               $('#detail_kelas').modal('show');
+               $('.waiter').hide();
+            });
         }
     </script>
 

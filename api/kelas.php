@@ -8,6 +8,7 @@
  * 
  */
 
+ini_set('display_errors', '1');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Content-Range, Content-Disposition, Content-Description');
@@ -26,6 +27,30 @@ if(isset($_GET['menu']))
     elseif($_GET['menu']=='pengajar_kelas')
     {
         $kelas->pengajarKelas();
+    }
+    elseif($_GET['menu']=='detail')
+    {
+        if(isset($_GET['id_kelas']))
+        {
+            $kelas->detailKelas($_GET['id_kelas']);
+        }
+        else
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>'id kelas tidak boleh kosong');
+            echo json_encode($hasil);
+        }
+
+    }elseif($_GET['menu']=='materi')
+    {
+        if(isset($_GET['id_kelas']))
+        {
+            $kelas->getMateriKelas($_GET['id_kelas']);
+        }
+        else
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>'id kelas tidak boleh kosong');
+            echo json_encode($hasil);
+        }
     }
     else
     {

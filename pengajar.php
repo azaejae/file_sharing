@@ -27,10 +27,47 @@
 
 </head>
 
-<body>
+<body onload="showMenu();">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="before_login" style="display: none">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.php">Open School Indonesia</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="sekolah.php">Sekolah</a>
+                    </li>
+                    <li class="active">
+                        <a href="pengajar.php">Pengajar</a>
+                    </li>
+                    <li>
+                        <a href="kelas.php">Kelas</a>
+                    </li>
+                    <li>
+                        <a href="mendaftar.php">Mendaftar</a>
+                    </li>
+                    <li><a href="login.php">Login</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- nav after login -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="after_login" style="display: none">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -46,18 +83,18 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="#">Sekolah</a>
+                        <a href="sekolah.php">Sekolah</a>
                     </li>
                     <li class="active">
-                        <a href="#">Pengajar</a>
+                        <a href="pengajar.php">Pengajar</a>
                     </li>
                     <li>
-                        <a href="#">Kelas</a>
+                        <a href="kelas.php">Kelas</a>
                     </li>
                     <li>
-                        <a href="#">Mendaftar</a>
+                        <a href="dashboard.php">Dashboard</a>
                     </li>
-                    <li><a href="#">Login</a>
+                    <li><a href="#" onclick="logout();">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -66,25 +103,11 @@
         <!-- /.container -->
     </nav>
 
+    <!--End Nav after login-->
+
     <!-- Page Content -->
     <div class="container content">
         <div class="row">
-            <form action="">
-                <div class="col-sm-6 col-sm-offset-2">
-                    <input type="text" name="" id="" class="form-control col-sm-12" placeholder="anunya disini">
-                </div>
-                <div class="col-sm-3">
-                    <button class="btn btn-primary "><i class="fa fa-search fa-lg"></i>&nbsp;&nbsp;Cari Pengajar</button>
-                </div>
-            </form>
-        </div>
-
-        <hr>
-
-        <div class="row">
-            <div class="col-sm-12">
-                <h2>Daftar Pengajar</h2>
-            </div>
             <div class="col-sm-12">
                 <!-- TABLE -->
                 <!-- /.row -->
@@ -92,31 +115,23 @@
 
                     <!-- TITLE TABLE -->
                     <div class="panel-heading">
-                        Table
+                        Daftar pengajar
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover">
+                            <table class="table table-striped table-bordered table-hover" id="pengajar">
                                 <thead>
                                     <tr>
-                                        <th>NPSN</th>
+                                        <th>Nama pengajar</th>
                                         <th>Nama Sekolah</th>
-                                        <th>Alamat Sekolah</th>
-                                        <th>Status</th>
-                                        <th>Op</th>
+                                        <th>Opsi</th>
                                     </tr>
                                 </thead>
 
                                 <!-- TABLE CONTENT -->
                                 <tbody>
-                                    <tr>
-                                        <td>2021780</td>
-                                        <td>SMKN 1 Cikampek</td>
-                                        <td>Jl. Pangkal Perjuangan</td>
-                                        <td>Negeri</td>
-                                        <td>Ubah</td>
-                                    </tr>
+
                                 </tbody>
                                 <!-- TABLE CONTENT -->
                             </table>
@@ -141,12 +156,27 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-
-    <!-- Script to Activate the Carousel -->
+    <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="js/sesi.js"></script>
     <script>
-    $('.carousel').carousel({
-        interval: 5000 //changes the speed
-    })
+        var host='http://api.osindonesia.org/'
+        $(document).ready(function(){
+            alert('jalan');
+           //get pengajar
+            $.getJSON(host+"pengajar.php",function(result){
+                $.each(result.data, function(i, sk){
+                    $('#pengajar tbody').append(
+                        "<tr>"+
+                        "<td>"+sk.nama_pengajar+"</td>"+
+                        "<td>"+sk.nama_sekolah+"</td>"+
+                        "<td>Lihat kelas</td>"+
+                        "</tr>"
+                    );
+                })
+            }).done(function(){
+                $('#pengajar').dataTable();
+            });
+        });
     </script>
 
 </body>

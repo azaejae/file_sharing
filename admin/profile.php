@@ -253,7 +253,7 @@
 
   <!-- Page-Level Demo Scripts - Blank - Use for reference -->
 <script>
-    var host='http://api.local/';
+    var host='http://api.osindonesia.org/';
     $(document).ready(function(){
         //detai pengguna
         $.getJSON(host+"user.php?detail="+sessionStorage.getItem('access_key'),function(result){

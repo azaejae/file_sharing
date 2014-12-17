@@ -46,18 +46,18 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="#">Sekolah</a>
+                        <a href="sekolah.php">Sekolah</a>
                     </li>
                     <li>
-                        <a href="#">Pengajar</a>
+                        <a href="pengajar.php">Pengajar</a>
                     </li>
                     <li>
-                        <a href="#">Kelas</a>
+                        <a href="kelas.php">Kelas</a>
                     </li>
                     <li>
-                        <a href="#">Mendaftar</a>
+                        <a href="mendaftar.php">Mendaftar</a>
                     </li>
-                    <li class="active"><a href="#">Login</a>
+                    <li class="active"><a href="login.php">Login</a>
                     </li>
                 </ul>
             </div>
@@ -72,6 +72,7 @@
             <div class="col-md-4 col-md-offset-4 text-center">
                 <div id="login">
                     <h3 class="form-group"><b>Login pengajar</b></h3>
+                    <img class="waiter" src="css/images/waiter.gif" />
                     <hr>
                     <br>
                     <div class="row">
@@ -107,9 +108,10 @@
             }
         }
         $(document).ready(function(){
-            var host='http://api.local/pengajar.php?menu=login'
+            var host='http://api.osindonesia.org/pengajar.php?menu=login'
             $('#form_login').submit(function(){
-                alert(host);
+                //alert(host);
+                $('.waiter').show();
                 $.ajax({
                     url : host,
                     type: "POST",

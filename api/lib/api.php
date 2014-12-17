@@ -26,7 +26,7 @@ class Api {
             $api_key=$_GET['api_key'];
             $secret=$_GET['secret'];
             $koneksi=DbConn::getConnection();
-            $sql='SELECT api_key,secret,alamat_domain FROM api_access WHERE api_key = :api_key AND secret = :secret AND alamat_domain = :origin ';
+            $sql="SELECT api_key,secret,alamat_domain FROM api_access WHERE api_key = :api_key AND secret = :secret AND alamat_domain LIKE '%:origin'";
             $exe= $koneksi->prepare($sql);
             $exe->execute(array(':api_key'=>$api_key,':secret'=>$secret,':origin'=>$url));
             $hasil=$exe->rowCount();

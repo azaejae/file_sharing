@@ -224,8 +224,9 @@
 
   <!-- Page-Level Demo Scripts - Blank - Use for reference -->
 <script>
+    var host='http://api.osindonesia.org/'
     $(document).ready(function(){
-        var tambah_pengguna='http://api.local/user.php?menu=tambah'
+        var tambah_pengguna='http://api.osindonesia.org/user.php?menu=tambah'
        /* if(sessionStorage.getItem('access_key')==null)
         {
             $(location).attr('href','login.php');
@@ -244,7 +245,7 @@
         $("#sekolah").autocomplete({
             source: function( request, response ) {
                 $.ajax({
-                    url: "http://api.local/sekolah.php?menu=label",
+                    url: "http://api.osindonesia.org/sekolah.php?menu=label",
                     dataType: "json",
                     data: {term: request.term},
                     success: function(data) {
@@ -265,7 +266,7 @@
         });
 
         //daftar pengguna
-        $.getJSON("http://api.local/user.php",function(result){
+        $.getJSON("http://api.osindonesia.org/user.php",function(result){
             $.each(result.data, function(i, sk){
                 //alert(sk.nama_sekolah);
                 $("#pengguna tbody").append("<tr>" +
@@ -275,7 +276,7 @@
                 "<td>"+sk.nama_sekolah+"</td>"+
                 "<td>"+sk.alamat+"</td>"+
                 "<td>"+sk.email+"</td>"+
-                "<td>Hapus | Ubah</td>"+
+                "<td><a href='#' onclick='hapusPengguna(\""+sk.username+"\")'>Hapus</a></td>"+
                 "</tr>");
             })
         }).done(function(){
@@ -316,6 +317,24 @@
         });
 
     });
+
+    function hapusPengguna(username)
+    {
+       // alert('hapus '+username);
+        if (confirm('Anda yakin akan menghapus '+username+' ini?')) {
+            //hapus
+            $.getJSON(host+"user.php",{
+                menu : "hapus",
+                username : username,
+                access_key : sessionStorage.getItem('access_key')
+            }).done(function(data){
+                window.location.reload();
+            });
+        } else {
+
+        }
+
+    }
 </script>
 </body>
 

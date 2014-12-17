@@ -6,8 +6,8 @@
  * Time: 11:16
  * */
 
-require(realpath(dirname(__FILE__)) . '\vendor\autoload.php');
-require(realpath(dirname(__FILE__)) . '\berkas.php');
+require(realpath(dirname(__FILE__)) . '/vendor/autoload.php');
+require(realpath(dirname(__FILE__)) . '/berkas.php');
 use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
 
@@ -120,7 +120,15 @@ class User {
         }
         catch(PDOException $e)
         {
-            $pesan=array('hasil'=>'gagal','pesan'=>$e->getMessage());
+            if($e->getCode()=="23000")
+            {
+                $pesan=array('hasil'=>'gagal','pesan'=>'Username atau Email telah terdaftar');
+            }
+            else
+            {
+                $pesan=array('hasil'=>'gagal','pesan'=>$e->getMessage().' error code:  '.$e->getCode());
+            }
+
             echo json_encode($pesan);
             //echo $e->getMessage();
         }
@@ -384,6 +392,27 @@ class User {
                 return false;
             }
         }
+    }
+
+    //hapus pengguna
+    public function hapusPengguna($username)
+    {
+       if($this->cekAccessKey())
+       {
+            $sql="DELETE FROM user WHERE username=:username";
+           try{
+               $exe=$this->_db->prepare($sql);
+               $exe->execute(array('username'=>$username));
+               $hasil=array('hasil'=>'berhasil','pesan'=>$username.' Berhasil dihapus');
+               echo json_encode($hasil);
+           }
+           catch(PDOException $e)
+           {
+               $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
+               echo json_encode($hasil);
+           }
+
+       }
     }
 
     public function __destruct()

@@ -48,18 +48,18 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="#">Sekolah</a>
+                        <a href="sekolah.php">Sekolah</a>
+                    </li>
+                    <li>
+                        <a href="pengajar.php">Pengajar</a>
+                    </li>
+                    <li>
+                        <a href="kelas.php">Kelas</a>
                     </li>
                     <li class="active">
-                        <a href="#">Pengajar</a>
+                        <a href="mendaftar.php">Mendaftar</a>
                     </li>
-                    <li>
-                        <a href="#">Kelas</a>
-                    </li>
-                    <li>
-                        <a href="#">Mendaftar</a>
-                    </li>
-                    <li><a href="#">Login</a>
+                    <li><a href="login.php">Login</a>
                     </li>
                 </ul>
             </div>
@@ -127,7 +127,14 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery-ui.min.js"></script>
     <script>
-        var host="http://api.local/pengajar.php";
+        function cekSesi()
+        {
+            if(sessionStorage.getItem('token')!==null)
+            {
+                $(location).attr('href','dashboard.php');
+            }
+        }
+        var host="http://api.osindonesia.org/pengajar.php";
         $(document).ready(function(){
             $('#pendaftaran_pengajar').submit(function(){
                 var formData = new FormData($(this)[0]);
@@ -163,7 +170,7 @@
             $("#nama_sekolah").autocomplete({
                 source: function( request, response ) {
                     $.ajax({
-                        url: "http://api.local/sekolah.php?menu=label",
+                        url: "http://api.osindonesia.org/sekolah.php?menu=label",
                         dataType: "json",
                         data: {term: request.term},
                         success: function(data) {
