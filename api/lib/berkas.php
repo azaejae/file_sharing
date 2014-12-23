@@ -37,15 +37,6 @@ class Berkas
      * @return mixed
      */
 
-    public function setHash($hash)
-    {
-        $this->_hash = $hash;
-    }
-
-    /**
-     * @return mixed
-     */
-
     protected function setExtensiBerkas()
     {
         $ex=new SplFileInfo($this->_namaFile);
@@ -62,20 +53,11 @@ class Berkas
 
 
     /**
-     * @param mixed $namaFile
-     */
-    public function setNamaFile($namaFile)
-    {
-        $namaFile= basename($namaFile);
-        $this->_namaFile = $namaFile;
-    }
-
-    /**
      * @param mixed $base
      */
-    public function setBase($base)
+    protected function setBase()
     {
-        $this->_base = $base;
+        $this->_base = "http://cdn.osindonesia.org/";
     }
 
     /**
@@ -111,15 +93,26 @@ class Berkas
 
     }
 
-    protected function tambahBerkas()
+    public function tambahBerkas()
     {
         $sql= 'INSERT INTO berkas(hash,ekstensi_berkas,nama_file,base,ukuran) VALUES(:hash,:ekstensi_berkas,:nama_file,:base,:ukuran)';
-        $exe=$this->_db->prepare($sql);
-        $exe->execute(array(':hash'=>$this->getHash(),
-                            ':ekstensi_berkas'=>$this->getExtensiBerkas(),
-                            ':nama_file'=>$this->getNamaFile(),
-                            ':base'=>$this->getBase(),
-                            ':ukuran'=>$this->getUkuran()));
+        try {
+
+            $exe = $this->_db->prepare($sql);
+            $exe->execute(array(':hash' => $this->_hash,
+                ':ekstensi_berkas' => $this->_extensiBerkas,
+                ':nama_file' => $this->_namaFile,
+                ':base' => $this->_base,
+                ':ukuran' => $this->_ukuran));
+
+            $hasil=array('hasil'=>'berhasil','hash'=>$this->_hash);
+            echo json_encode($hasil);
+        }
+        catch(PDOException $e)
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage().' '.$e->getCode());
+            echo json_encode($hasil);
+        }
     }
 
     public function getBerkas($hash=null)
@@ -147,11 +140,16 @@ class Berkas
     {
         $file=$berkas;
         $target_dir = "uploads/";
-        $target_file = $target_dir . $this->_namaFile;
+        $target_file = $target_dir . basename($file['berkas']['name']);
         move_uploaded_file($file["berkas"]["tmp_name"], $target_file);
 
         $bucket = 'berkasosi';
-        $keyname = Berkas::fileHashing($target_file).".".Berkas::getExtensi($file["berkas"]["name"]);;
+        $this->setUkuran($target_file);
+        $this->setBase();
+        $this->_hash=$this->fileHashing($target_file);
+        $keyname = $this->_hash.".".$this->getExtensi($file["berkas"]["name"]);
+        $this->_namaFile=$keyname;
+        $this->setExtensiBerkas();
 // $filepath should be absolute path to a file on disk
         $filepath = $target_file;
 
@@ -173,7 +171,7 @@ class Berkas
 
 
             // Print the URL to the object.
-            echo $result['ObjectURL'] . "\n";
+            //echo $result['ObjectURL'] . "\n";
             unlink($target_file);
         } catch (S3Exception $e) {
             echo $e->getMessage() . "\n";
@@ -185,6 +183,7 @@ class Berkas
      */
     public function __destruct()
     {
+        $this->_db=null;
     }
 
 

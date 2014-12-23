@@ -253,7 +253,7 @@
                                 "<td>"+sk.tujuan_materi+"</td>" +
                                 "<td>"+sk.deskripsi_materi+"</td>" +
                                 "<td>"+sk.author+"</td>" +
-                                "<td><a href="+sk.href+">Unduh</a></td>" +
+                                "<td><a href="+sk.href+" target='_blank'>Unduh</a></td>" +
                                 "</tr>"
                             );
                         $('#daftar_materi').append("<table>");

@@ -28,4 +28,13 @@ if(isset($_GET['menu']))
         $hasil=array('hasil'=>'berhasil','pesan'=>$hash);
         echo json_encode($hasil);
     }
+    elseif($_GET['menu']=='unggah')
+    {
+        $berkas->unggahBerkas($_FILES);
+        $berkas->tambahBerkas();
+    }
+    else
+    {
+
+    }
 }

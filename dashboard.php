@@ -376,7 +376,7 @@
                                                             <form role="form" id="form_upload_materi" enctype="multipart/form-data" method="post">
                                                                 <div class="form-group">
                                                                     <label for="berkas_materi">Berkas materi</label>
-                                                                    <input class="form-control" type="file" id="berkas_materi" name="berkas_materi">
+                                                                    <input class="form-control" type="file" id="berkas_materi" name="berkas">
                                                                 </div>
                                                             </form>
                                                             <img class="waiter" src="css/images/waiter.gif" />
@@ -385,12 +385,17 @@
                                                                     <input type="text" class="form-control" name="judul_materi" required placeholder="Judul materi">
                                                                 </div>
                                                                 <div class="form-group">
+                                                                    <input type="text" class="form-control" name="author" placeholder="Author">
+                                                                </div>
+                                                                <div class="form-group">
                                                                     <textarea class="form-control" name="tujuan_materi" required placeholder="Tujuan materi" ></textarea>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <textarea class="form-control" name="deskripsi_materi" required placeholder="Deskripsi materi"></textarea>
                                                                 </div>
                                                                 <div class="form-group">
+                                                                    <input type="hidden" name="id_materi" id="id_materi">
+                                                                    <input type="hidden" name="id_kelas" id="id_kelas">
                                                                     <input type="submit" class="btn btn-primary btn-lg" value="Simpan">
                                                                 </div>
                                                             </form>
@@ -450,7 +455,7 @@
                     $(location).attr('href','login.php');
                 });
 
-                //detai pengguna
+                //detail pengguna
                 $.getJSON(host+"user.php?detail="+sessionStorage.getItem('token'),function(result){
                     $.each(result.data, function(i, sk){
                         // alert(sk.nama_user+" "+sk.email+" "+sk.alamat+" "+sk.username+" "+sk.foto+" "+sk.nama_sekolah);
@@ -497,7 +502,7 @@
                 });
 
                 $('#ubahpassform').submit(function(){
-                    alert(host+sessionStorage.getItem('tonken'));
+                    alert(host+sessionStorage.getItem('token'));
                     $.ajax({
                         url : host+'user.php?menu=ubahpass&access_key='+sessionStorage.getItem('token'),
                         type: "POST",
@@ -570,7 +575,30 @@
                     return false;
                 });
 
+            //submit form detail materi
+                $('#form_detail_materi').submit(function(){
+                    $.ajax({
+                        url : 'http://api.local/materi.php?menu=tambah&access_key='+sessionStorage.getItem('token'),
+                        type: "POST",
+                        data : $('form#form_detail_materi').serialize(),
+                        dataType: "JSON",
+                        success: function(respon)
+                        {
+                            if(respon.hasil==='berhasil')
+                            {
+                                //pesan berhasil
+                                alert(respon.pesan);
+                                location.reload();
 
+                            }
+                            else
+                            {
+                                alert(respon.pesan);
+                            }
+                        }
+                    });
+                    return false;
+                });
             });
 
             //fungsi tambah materi
@@ -579,7 +607,7 @@
                 $('#tambah_materi').modal('show');
 
                 //check hash berkas
-                $('#berkas_materi').change(function(){
+                $('#berkas_materi').change(function(e){
                     $('.waiter').show();
                     var oFile = document.getElementById('berkas_materi').files[0];
                     var sha1 = CryptoJS.algo.MD5.create();
@@ -603,24 +631,53 @@
                                 menu : 'check',
                                 hash : final
                             }).done(function(result){
-                                $('.waiter').hide();
                                 if(result.pesan==final)
                                 {
+                                    $('.waiter').hide();
+                                    $('#id_materi').val(result.pesan);
+                                    $('#id_kelas').val(idkelas);
                                     $('#form_upload_materi').hide();
                                     $('#form_detail_materi').show();
                                 }
                                 else
                                 {
                                     //upload berkas
+                                    var formData = new FormData($('#form_upload_materi')[0]);
+                                    $.ajax({
+                                        url: 'http://api.local/berkas.php?menu=unggah',
+                                        type: 'POST',
+                                        data: formData,
+                                        dataType: "JSON",
+                                        async: false,
+                                        cache: false,
+                                        contentType: false,
+                                        processData: false,
+                                        success: function (result) {
+                                            if(result.hash==final)
+                                            {
+                                                $('.waiter').hide();
+                                                $('#id_materi').val(result.hash);
+                                                $('#id_kelas').val(idkelas);
+                                                $('#form_upload_materi').hide();
+                                                $('#form_detail_materi').show();
+                                            }
+                                            else
+                                            {
+                                                $('.waiter').hide();
+                                                alert(result.pesan);
+                                            }
+                                        }
 
-                                    $('#form_upload_materi').hide();
-                                    $('#form_detail_materi').show();
+                                    });
+
                                 }
                             });
                         }
 
                     }
+                    return false;
                 });
+
             }
         </script>
 
