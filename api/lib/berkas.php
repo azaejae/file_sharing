@@ -48,7 +48,7 @@ class Berkas
     {
         $ex= new SplFileInfo($berkas);
 
-        return $ex->getExtension();
+        return strtolower($ex->getExtension());
     }
 
 

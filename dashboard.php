@@ -578,7 +578,7 @@
             //submit form detail materi
                 $('#form_detail_materi').submit(function(){
                     $.ajax({
-                        url : 'http://api.local/materi.php?menu=tambah&access_key='+sessionStorage.getItem('token'),
+                        url : host+'materi.php?menu=tambah&access_key='+sessionStorage.getItem('token'),
                         type: "POST",
                         data : $('form#form_detail_materi').serialize(),
                         dataType: "JSON",
@@ -644,7 +644,7 @@
                                     //upload berkas
                                     var formData = new FormData($('#form_upload_materi')[0]);
                                     $.ajax({
-                                        url: 'http://api.local/berkas.php?menu=unggah',
+                                        url: host+'berkas.php?menu=unggah',
                                         type: 'POST',
                                         data: formData,
                                         dataType: "JSON",
