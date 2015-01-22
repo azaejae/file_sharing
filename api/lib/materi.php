@@ -7,7 +7,7 @@
  * Time: 18:22
  * 
  */
-
+require(realpath(dirname(__FILE__)) . '/user.php');
 class Materi {
     protected $_db;
     protected $_id_materi;
@@ -77,5 +77,89 @@ class Materi {
         $this->_id_materi=substr(md5($acak.$waktu),0,20);
     }
 
+    //get jumlah materi non dinas
+    public function getJumlahMateri()
+    {
+        $sql='SELECT COUNT(*) AS jumlah_materi FROM v_materi';
+        try{
+            $exe=$this->_db->query($sql);
+            $data=$exe->fetchAll(PDO::FETCH_ASSOC);
+            $hasil=array('data'=>$data);
+            echo json_encode($hasil);
+        }
+        catch(PDOException $e)
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
+            echo json_encode($hasil);
+        }
+    }
+
+    //get jumlah BSE
+    public function getJumlahBSE()
+    {
+        $sql='SELECT COUNT(*) AS jumlah_bse FROM v_bse';
+        try{
+            $exe=$this->_db->query($sql);
+            $data=$exe->fetchAll(PDO::FETCH_ASSOC);
+            $hasil=array('data'=>$data);
+            echo json_encode($hasil);
+        }
+        catch(PDOException $e)
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
+            echo json_encode($hasil);
+        }
+    }
+
+    //get daftar materi pengajar
+    public function getMateri($access_key)
+    {
+        $user= new User();
+        $username=$user->getUsername($access_key);
+        $sql='SELECT id_materi, judul_materi, deskripsi_materi, tujuan_materi, nama_kelas, author, href FROM v_materi_kelas WHERE username=:username';
+        try{
+            $exe=$this->_db->prepare($sql);
+            $exe->execute(array('username'=>$username));
+            $data=$exe->fetchAll(PDO::FETCH_ASSOC);
+            $hasil=array('data'=>$data);
+            echo json_encode($hasil);
+        }
+        catch(PDOException $e)
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
+            echo json_encode($hasil);
+        }
+
+    }
+
+    //hapus materi
+    public function hapusMateri($id_materi)
+    {
+        if(User::cekAccessKey())
+        {
+            $sql='DELETE FROM materi WHERE id_materi=:id_materi';
+            try{
+                $exe=$this->_db->prepare($sql);
+                $exe->execute(array('id_materi'=>$id_materi));
+                $hasil=array('hasil'=>'berhasil','Materi berhasil dihapus');
+                echo json_encode($hasil);
+            }
+            catch(PDOException $e)
+            {
+                $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
+                echo json_encode($hasil);
+            }
+        }
+        else
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>'Akses ditolak');
+            echo json_encode($hasil);
+        }
+
+
+    }
+
 
 }
+//$mater = new Materi();
+//$mater->hapusMateri('1a607183bf133a836b62');

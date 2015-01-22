@@ -12,7 +12,6 @@ use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
 class Berkas
 {
-
     //property berkas
     protected $_hash;
     protected $_extensiBerkas;
@@ -138,6 +137,7 @@ class Berkas
 
     public function unggahBerkas($berkas)
     {
+        ini_set('max_execution_time', 0);
         $file=$berkas;
         $target_dir = "uploads/";
         $target_file = $target_dir . basename($file['berkas']['name']);
@@ -147,8 +147,8 @@ class Berkas
         $this->setUkuran($target_file);
         $this->setBase();
         $this->_hash=$this->fileHashing($target_file);
-        $keyname = $this->_hash.".".$this->getExtensi($file["berkas"]["name"]);
-        $this->_namaFile=$keyname;
+        $keyname = $file['berkas']['name'].".".$this->getExtensi($file["berkas"]["name"]);
+        $this->_namaFile=str_replace(' ','_',$keyname);
         $this->setExtensiBerkas();
 // $filepath should be absolute path to a file on disk
         $filepath = $target_file;
@@ -163,7 +163,7 @@ class Berkas
             // Upload data.
             $result = $s3->putObject(array(
                 'Bucket' => $bucket,
-                'Key'    => $keyname,
+                'Key'    => $this->_namaFile,
                 'SourceFile'   => $filepath,
                 'ACL'    => 'public-read'
             ));

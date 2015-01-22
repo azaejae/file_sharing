@@ -146,6 +146,19 @@
                                                     <a href="#" id="logout">Logout</a>
                                                 </div>
                                             </div>
+                                            </br>
+                                            <div class="row">
+                                                <div class="col-md-4 col-lg-offset-1 text-center" style="background-color: limegreen; height: 150px;">
+                                                    <p>Jumlah materi dari dinas</p>
+                                                    <h1 id="bse"></h1>
+                                                    <p>Materi</p>
+                                                </div>
+                                                <div class="col-md-4 col-lg-offset-2 text-center" style="background-color:#acdd4a ; height: 150px;">
+                                                    <p>Jumlah materi dari Sekolah</p>
+                                                    <h1 id="materi"></h1>
+                                                    <p>Materi</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -418,6 +431,25 @@
                                         <div class="panel-heading">
                                             Daftar berkas
                                         </div>
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered table-hover" id="daftar_berkas">
+                                                    <thead>
+                                                    <tr>
+                                                        <th width="20%">Judul</th>
+                                                        <th width="15%">Kelas</th>
+                                                        <th width="25%">Tujuan</th>
+                                                        <th width="35%">Deskripsi</th>
+                                                        <th width="5%">Opsi</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+
+                                                    <!-- TABLE CONTENT -->
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -442,13 +474,14 @@
     <script src='http://crypto-js.googlecode.com/svn/tags/3.1.2/build/components/lib-typedarrays-min.js'></script>
 
         <script>
-            var host='http://api.osindonesia.org/';
+            var akses='api_key=kadHaSKhkadk&secret=4c2d7c5baf2ca604466a59d126d103ff';
+            var host='http://api.local/';
             $(document).ready(function(){
                 if(sessionStorage.getItem('token')==null)
                 {
                     $(location).attr('href','login.php');
                 }
-                alert(sessionStorage.token);
+                //alert(sessionStorage.token);
                 $('#logout').click(function(){
                     alert('Anda Berhasil Logout');
                     sessionStorage.clear();
@@ -529,7 +562,7 @@
 
                 //daftar kelas
                 //get kelas
-                $.getJSON(host+"kelas.php?menu=pengajar_kelas&access_key="+sessionStorage.token,function(result){
+                $.getJSON(host+"kelas.php?"+akses+"&menu=pengajar_kelas&access_key="+sessionStorage.token,function(result){
                     $.each(result.data, function(i, sk){
                         //alert(sk.nama_sekolah);
                         $("#daftar_kelas tbody").append("<tr>" +
@@ -538,13 +571,34 @@
                         "<td>"+sk.tujuan_kelas+"</td>"+
                         "<td>"+sk.deskripsi_kelas+"</td>"+
                         "<td>" +
-                        "<a href='#' title='Tambah materi' onclick='tambahMateri(\""+sk.id_kelas+"\");'><span class='glyphicon glyphicon-plus-sign'></span></a>"+
+                        "<a href='#' title='Tambah materi' onclick='tambahMateri(\""+sk.id_kelas+"\");'><span class='glyphicon glyphicon-plus-sign'></span></a> "+
+                        "<a href='#' title='Hapus kelas' onclick='hapusKelas(\""+sk.id_kelas+"\");'><span class='glyphicon glyphicon-trash'></span></a>"+
                         "</td>"+
                         "</tr>");
                     })
                 }).done(function(){
                     $('#daftar_kelas').dataTable();
                 });
+
+                //daftar berkas
+                $.getJSON(host+"materi.php?"+akses+"&menu=materi&access_key="+sessionStorage.token,function(result){
+                    $.each(result.data, function(i, sk){
+                        //alert(sk.nama_sekolah);
+                        $("#daftar_berkas tbody").append("<tr>" +
+                        "<td>"+sk.judul_materi+"</td>"+
+                        "<td>"+sk.nama_kelas+"</td>"+
+                        "<td>"+sk.tujuan_materi+"</td>"+
+                        "<td>"+sk.deskripsi_materi+"</td>"+
+                        "<td>" +
+                        "<a href='"+sk.href+"' title='Download materi'><span class='glyphicon glyphicon-download-alt'></span></a> "+
+                        "<a href='#' title='Hapus materi' onclick='hapusMateri(\""+sk.id_materi+"\");'><span class='glyphicon glyphicon-trash'></span></a>"+
+                        "</td>"+
+                        "</tr>");
+                    })
+                }).done(function(){
+                    $('#daftar_kelas').dataTable();
+                });
+
                 //show form tambah kelas
                 $('#bt_tambah_kelas').click(function(){
                     $('#tambah_kelas').modal('show');
@@ -599,6 +653,23 @@
                     });
                     return false;
                 });
+
+                //get jumlah materi
+                $.getJSON('http://api.local/jumlah.php?materi=1',function(result){
+                    $.each(result.data, function(i, sk){
+                        // alert(sk.nama_user+" "+sk.email+" "+sk.alamat+" "+sk.username+" "+sk.foto+" "+sk.nama_sekolah);
+                        $("#materi").append(sk.jumlah_materi);
+
+                    })
+                });
+                //get jumlah BSE
+                $.getJSON('http://api.local/jumlah.php',function(result){
+                    $.each(result.data, function(i, sk){
+                        // alert(sk.nama_user+" "+sk.email+" "+sk.alamat+" "+sk.username+" "+sk.foto+" "+sk.nama_sekolah);
+                        $("#bse").append(sk.jumlah_bse);
+
+                    })
+                });
             });
 
             //fungsi tambah materi
@@ -645,6 +716,7 @@
                                     var formData = new FormData($('#form_upload_materi')[0]);
                                     $.ajax({
                                         url: host+'berkas.php?menu=unggah',
+                                        //url: 'http://api.local/berkas.php?menu=unggah',
                                         type: 'POST',
                                         data: formData,
                                         dataType: "JSON",
@@ -678,6 +750,41 @@
                     return false;
                 });
 
+            }
+
+            //fungsi hapus materi
+            function hapusKelas(id_kelas)
+            {
+                // alert('hapus '+username);
+                if (confirm('Anda yakin akan menghapus kelas ini?')) {
+                    //hapus
+                    $.getJSON(host+"kelas.php",{
+                        menu : "hapus",
+                        id_kelas : id_kelas,
+                        access_key : sessionStorage.getItem('token')
+                    }).done(function(data){
+                        window.location.reload();
+                    });
+                } else {
+
+                }
+            }
+
+            //hapus materi
+            function hapusMateri(id_materi)
+            {
+                if (confirm('Anda yakin akan menghapus materi ini?')) {
+                    //hapus
+                    $.getJSON(host+"materi.php",{
+                        menu : "hapus",
+                        id_materi : id_materi,
+                        access_key : sessionStorage.getItem('token')
+                    }).done(function(data){
+                        window.location.reload();
+                    });
+                } else {
+
+                }
             }
         </script>
 

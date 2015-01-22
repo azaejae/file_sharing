@@ -229,6 +229,24 @@ class Sekolah {
         }
     }
 
+    //get jumlah sekolah
+    public function getJumlahSekolah()
+    {
+        $sql='SELECT COUNT(*) AS jumlah_sekolah FROM sekolah';
+        try{
+            $exe=$this->_db->query($sql);
+            $data=$exe->fetchAll(PDO::FETCH_ASSOC);
+            $hasil=array('data'=>$data);
+            echo json_encode($hasil);
+
+        }
+        catch(PDOException $e)
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
+            echo json_encode($hasil);
+        }
+    }
+
     public function __destruct()
     {
         $this->_db=null;
@@ -236,5 +254,6 @@ class Sekolah {
 }
 
 //$sekolah= new Sekolah();
+//$sekolah->getJumlahSekolah();
 //$sekolah->getAutoCompleteData();
 //$sekolah->getDataSekolah();

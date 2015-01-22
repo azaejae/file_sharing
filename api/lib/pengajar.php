@@ -12,11 +12,6 @@ require(realpath(dirname(__FILE__)) . '/user.php');
 class Pengajar extends User {
 
 
-
-    //method
-
-    //constructor
-
     //tambah user ke dalam basis data
     public function tambahPengajar()
     {
@@ -79,14 +74,40 @@ class Pengajar extends User {
     }
 
     //get pengajar
-    public function getPengajar()
+    public function getPengajar($npsn=null)
     {
-        $sql="SELECT npsn, nama_sekolah, nama_user as nama_pengajar, username as id_pengajar FROM v_pengguna WHERE jenis_user='pengajar'";
+        if($npsn==null)
+        {
+            $sql="SELECT npsn, nama_sekolah, nama_user as nama_pengajar, username as id_pengajar FROM v_pengguna WHERE jenis_user='pengajar'";
+        }
+        else
+        {
+            $sql="SELECT npsn, nama_sekolah, nama_user as nama_pengajar, username as id_pengajar FROM v_pengguna WHERE npsn=".$npsn." AND jenis_user='pengajar'";
+        }
+
         try{
             $exe=$this->_db->query($sql);
             $data=$exe->fetchAll(PDO::FETCH_ASSOC);
             $hasil=array('data'=>$data);
             echo json_encode($hasil);
+        }
+        catch(PDOException $e)
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>$e->getMessage());
+            echo json_encode($hasil);
+        }
+    }
+
+    //get jumlah pengajar
+    public function getJumlahPengajar()
+    {
+        $sql='SELECT COUNT(*) AS jumlah_pengajar FROM v_pengajar';
+        try{
+            $exe=$this->_db->query($sql);
+            $data=$exe->fetchAll(PDO::FETCH_ASSOC);
+            $hasil=array('data'=>$data);
+            echo json_encode($hasil);
+
         }
         catch(PDOException $e)
         {

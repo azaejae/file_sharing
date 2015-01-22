@@ -297,6 +297,17 @@ class User {
             echo $e->getMessage();
         }
     }
+    //get public username
+    public function getUsername($access_key)
+    {
+        $sql='SELECT username FROM v_akses_user WHERE access_key=:access_key';
+
+            $exe=$this->_db->prepare($sql);
+            $exe->execute(array('access_key'=>$access_key));
+            $row  = $exe->fetchColumn();
+            return $row;
+
+    }
 
     //Ubah password
     public  function ubahPassword($access_key,$pass_lama,$pass_baru)

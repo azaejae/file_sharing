@@ -157,19 +157,37 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="js/uri.min.js"></script>
     <script src="js/sesi.js"></script>
     <script>
         var host='http://api.osindonesia.org/'
         $(document).ready(function(){
-            alert('jalan');
-           //get pengajar
-            $.getJSON(host+"pengajar.php",function(result){
+
+            //URI get
+            r=new URI(window.location.href);
+            //alert(window.location.href);
+            var q= r.query();
+            if(r.hasQuery('npsn',true))
+            {
+                var hasil= URI.parseQuery(q);
+                //alert(hasil.idpengajar);
+                pk='&menu=pengajarsekolah&npsn='+hasil.npsn;
+            }
+            else
+            {
+                var pk='';
+            }
+
+            var akses='api_key=kadHaSKhkadk&secret=4c2d7c5baf2ca604466a59d126d103ff';
+
+
+            $.getJSON(host+"pengajar.php?"+akses+pk,function(result){
                 $.each(result.data, function(i, sk){
                     $('#pengajar tbody').append(
                         "<tr>"+
                         "<td>"+sk.nama_pengajar+"</td>"+
                         "<td>"+sk.nama_sekolah+"</td>"+
-                        "<td>Lihat kelas</td>"+
+                        "<td><a href=kelas.php?pengajar="+sk.id_pengajar+">Lihat kelas</a></td>"+
                         "</tr>"
                     );
                 })

@@ -131,7 +131,7 @@
             </div>
             <div class="item">
                 <!-- Set the third background image using inline CSS below. -->
-                <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide Three');"></div>
+                <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide Three')"></div>
                 <div class="carousel-caption">
                     <h2>Caption 3</h2>
                 </div>
@@ -150,12 +150,31 @@
 
     <!-- Page Content -->
     <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+        </div>
 
         <div class="row">
-            <div class="col-lg-12">
-                <h1>Lorem ipsum dolor sit amet.</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam amet eveniet sit dolorum labore maiores assumenda eius cumque, tempore ipsum veritatis! Aut sequi, quibusdam deleniti eius, blanditiis eaque reiciendis perspiciatis.</p>
+            <div class="col-md-3" style="background-color: #f5e79e; height: 150px;">
+                fsdfdsf
             </div>
+            <div class="col-md-3" style="background-color: #e38d13;height: 150px;">
+                sfdsfs
+            </div>
+            <div class="col-md-3" style="background-color: #f7e1b5;height: 150px;">
+                sfsdfds
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6" style="background-color: #005f8d; height: 150px;">
+                fsdfdsf
+            </div>
+            <div class="col-md-6" style="background-color: mediumseagreen;height: 150px;">
+                sfdsfs
+            </div>
+
         </div>
 
         <hr>

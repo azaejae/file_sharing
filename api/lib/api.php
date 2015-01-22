@@ -7,28 +7,27 @@
  * Time: 15:10
  * 
  */
-require_once "DbConn.php";
 class Api {
     //property
     protected $_db;
 
     public function __construct()
     {
+        require_once "DbConn.php";
         $this->_db=DbConn::getConnection();
     }
 
+    //api authentication
     public static function auth()
     {
         if((isset($_GET['api_key']))&&(isset($_GET['secret'])))
         {
-            $url=parse_url($_SERVER["HTTP_REFERER"]);
-            $url=$url['host'];
             $api_key=$_GET['api_key'];
             $secret=$_GET['secret'];
             $koneksi=DbConn::getConnection();
-            $sql="SELECT api_key,secret,alamat_domain FROM api_access WHERE api_key = :api_key AND secret = :secret AND alamat_domain LIKE '%:origin'";
+            $sql="SELECT api_key,secret,alamat_domain FROM api_access WHERE api_key = :api_key AND secret = :secret";
             $exe= $koneksi->prepare($sql);
-            $exe->execute(array(':api_key'=>$api_key,':secret'=>$secret,':origin'=>$url));
+            $exe->execute(array(':api_key'=>$api_key,':secret'=>$secret));
             $hasil=$exe->rowCount();
 
             if($hasil>0)
@@ -38,7 +37,7 @@ class Api {
             else
             {
                 header('Access-Control-Allow-Origin: *');
-                $hasil=array('hasil'=>'akses ditolak');
+                $hasil=array('hasil'=>'gagal','pesan'=>'Akses ditolak');
                 echo json_encode($hasil);
                 exit;
             }
@@ -46,10 +45,16 @@ class Api {
         else
         {
             header('Access-Control-Allow-Origin: *');
-            $hasil=array('hasil'=>'akses ditolak');
+            $hasil=array('hasil'=>'gagal','pesan'=>'Akses ditolak');
             echo json_encode($hasil);
             exit;
         }
+    }
+    //api generator
+
+    public function __destruct()
+    {
+        $this->_db=null;
     }
 
 

@@ -10,6 +10,8 @@
 ini_set('display_errors', '1');
 header('Access-Control-Allow-Origin: *');
 require(realpath(dirname(__FILE__)) . '/lib/pengajar.php');
+require(realpath(dirname(__FILE__)) . '/lib/api.php');
+$api = new Api();
 $pengajar =new Pengajar();
 
 if(isset($_GET['menu']))
@@ -32,17 +34,29 @@ if(isset($_GET['menu']))
         $pengajar->uploadFoto($_FILES);
         $pengajar->tambahPengajar();
     }
-    elseif($_GET['menu']=='kelas')
+    elseif($_GET['menu']=='pengajarsekolah')
     {
+        $api->auth();
+        if(isset($_GET['npsn']))
+        {
+            $pengajar->getPengajar($_GET['npsn']);
+        }
+        else
+        {
+            $pengajar->getPengajar();
+        }
+
 
     }
     else
     {
+        $api->auth();
         $pengajar->getPengajar();
 
     }
 }
 else
 {
+    $api->auth();
     $pengajar->getPengajar();
 }

@@ -122,13 +122,13 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered table-hover" id="kelas">
                                 <thead>
-                                    <tr>
-                                        <th>Pengajar</th>
-                                        <th>Nama kelas</th>
-                                        <th>Asal sekolah</th>
-                                        <th>Tingkat</th>
-                                        <th>Opsi</th>
-                                    </tr>
+                                <tr>
+                                    <th>Pengajar</th>
+                                    <th>Nama kelas</th>
+                                    <th>Asal sekolah</th>
+                                    <th>Tingkat</th>
+                                    <th>Opsi</th>
+                                </tr>
                                 </thead>
 
                                 <!-- TABLE CONTENT -->
@@ -189,13 +189,31 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="js/uri.min.js"></script>
     <script src="js/sesi.js"></script>
     <script>
         var host='http://api.osindonesia.org/'
         $(document).ready(function(){
+            //URI get
+            r=new URI(window.location.href);
+            //alert(window.location.href);
+            var q= r.query();
+            if(r.hasQuery('pengajar',true))
+            {
+                var hasil= URI.parseQuery(q);
+                //alert(hasil.idpengajar);
+                pk='&menu=pengajar_kelas&pengajar='+hasil.pengajar;
+            }
+            else
+            {
+                var pk='';
+            }
+
+            var akses='api_key=kadHaSKhkadk&secret=4c2d7c5baf2ca604466a59d126d103ff';
+
            //alert('jalan');
             //get semua data sekolah
-            $.getJSON(host+"kelas.php",function(result){
+            $.getJSON(host+"kelas.php?"+akses+pk,function(result){
                 $.each(result.data, function(i, sk){
                     //alert(sk.nama_sekolah);
                     $("#kelas tbody").append("<tr>" +
@@ -266,6 +284,7 @@
             });
         }
     </script>
+
 
 </body>
 

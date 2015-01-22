@@ -49,7 +49,7 @@ if(isset($_GET['menu']))
     }
     else
     {
-
+        $sekolah->getDataSekolah();
     }
 }
 else

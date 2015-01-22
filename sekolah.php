@@ -144,7 +144,7 @@
             //get info sekolah
             $.getJSON("http://api.osindonesia.org/sekolah.php",function(result){
                 $.each(result.data, function(i, sk){
-                    $("#daftar_sekolah").append("<li class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3\"><img width=\"150\" height=\"150\" src=\""+sk.logo+"\"><p>"+sk.nama_sekolah+"</p></li>");
+                    $("#daftar_sekolah").append("<li class=\"col-lg-3 col-md-3 col-sm-3 col-xs-3\"><a href='pengajar.php?npsn="+sk.npsn+"'><img width=\"150\" height=\"150\" src=\""+sk.logo+"\"></a><p>"+sk.nama_sekolah+"</p></li>");
                 });
             });
         });

@@ -10,12 +10,11 @@
 
 ini_set('display_errors', '1');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Content-Range, Content-Disposition, Content-Description');
-
 //require(realpath(dirname(__FILE__)) . '/lib/sekolah.php');
 require(realpath(dirname(__FILE__)) . '/lib/kelas.php');
+require(realpath(dirname(__FILE__)) . '/lib/api.php');
 
+$api = new Api();
 $kelas= new Kelas();
 if(isset($_GET['menu']))
 {
@@ -26,7 +25,17 @@ if(isset($_GET['menu']))
     }
     elseif($_GET['menu']=='pengajar_kelas')
     {
-        $kelas->pengajarKelas();
+        if(isset($_GET['pengajar']))
+        {
+            $api->auth();
+            $kelas->pengajarKelas($_GET['pengajar']);
+        }
+        else
+        {
+            $api->auth();
+            $kelas->pengajarKelas();
+        }
+
     }
     elseif($_GET['menu']=='detail')
     {
@@ -52,12 +61,41 @@ if(isset($_GET['menu']))
             echo json_encode($hasil);
         }
     }
+    elseif($_GET['menu']=='hapus')
+    {
+        if(isset($_GET['id_kelas']))
+        {
+            $kelas->hapusKelas($_GET['id_kelas']);
+        }
+        else
+        {
+            $hasil=array('hasil'=>'gagal','pesan'=>'id kelas tidak boleh kosong');
+            echo json_encode($hasil);
+        }
+    }
     else
     {
-        $kelas->getKelas();
+        $api->auth();
+        if(isset($_GET['npsn']))
+        {
+            $kelas->getKelas($_GET['npsn']);
+        }
+        else
+        {
+            $kelas->getKelas();
+        }
+
     }
 }
 else
 {
-    $kelas->getKelas();
+    $api->auth();
+    if(isset($_GET['npsn']))
+    {
+        $kelas->getKelas($_GET['npsn']);
+    }
+    else
+    {
+        $kelas->getKelas();
+    }
 }
