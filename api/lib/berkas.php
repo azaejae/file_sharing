@@ -147,7 +147,8 @@ class Berkas
         $this->setUkuran($target_file);
         $this->setBase();
         $this->_hash=$this->fileHashing($target_file);
-        $keyname = $file['berkas']['name'].".".$this->getExtensi($file["berkas"]["name"]);
+        $acak=substr($this->_hash,0,5);
+        $keyname = $acak."_".$file['berkas']['name'];
         $this->_namaFile=str_replace(' ','_',$keyname);
         $this->setExtensiBerkas();
 // $filepath should be absolute path to a file on disk
@@ -177,6 +178,19 @@ class Berkas
             echo $e->getMessage() . "\n";
         }
     }
+
+    //hapus berkas di server
+    public function hapusBerkas($id_berkas)
+    {
+
+    }
+
+    //daftar berkas semua user
+    public function getSemuaBerkas()
+    {
+
+    }
+
 
     /**
      *destructor
